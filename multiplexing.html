@@ -1,0 +1,397 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js navy">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Multiplexing - Wez's Terminal Emulator</title>
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+        <link rel="stylesheet" href="custom.css">
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">wezterm</a></li><li class="chapter-item expanded "><a href="installation.html"><strong aria-hidden="true">1.</strong> Install</a></li><li class="chapter-item expanded "><a href="features.html"><strong aria-hidden="true">2.</strong> Features</a></li><li class="chapter-item expanded "><a href="changelog.html"><strong aria-hidden="true">3.</strong> Change Log</a></li><li class="chapter-item expanded "><a href="config/files.html"><strong aria-hidden="true">4.</strong> Configuration</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="config/launch.html"><strong aria-hidden="true">4.1.</strong> Launching Programs</a></li><li class="chapter-item expanded "><a href="config/fonts.html"><strong aria-hidden="true">4.2.</strong> Fonts</a></li><li class="chapter-item expanded "><a href="config/font-shaping.html"><strong aria-hidden="true">4.3.</strong> Font Shaping</a></li><li class="chapter-item expanded "><a href="config/misc.html"><strong aria-hidden="true">4.4.</strong> Misc</a></li><li class="chapter-item expanded "><a href="config/keys.html"><strong aria-hidden="true">4.5.</strong> Key &amp; Mouse Binding</a></li><li class="chapter-item expanded "><a href="config/appearance.html"><strong aria-hidden="true">4.6.</strong> Colors &amp; Appearance</a></li><li class="chapter-item expanded "><a href="config/lua.html"><strong aria-hidden="true">4.7.</strong> Lua Reference</a></li></ol></li><li class="chapter-item expanded "><a href="hyperlinks.html"><strong aria-hidden="true">5.</strong> Hyperlinks</a></li><li class="chapter-item expanded "><a href="shell-integration.html"><strong aria-hidden="true">6.</strong> Shell Integration</a></li><li class="chapter-item expanded "><a href="imgcat.html"><strong aria-hidden="true">7.</strong> iTerm Image Protocol</a></li><li class="chapter-item expanded "><a href="ssh.html"><strong aria-hidden="true">8.</strong> SSH</a></li><li class="chapter-item expanded "><a href="serial.html"><strong aria-hidden="true">9.</strong> Serial Ports &amp; Arduino</a></li><li class="chapter-item expanded "><a href="multiplexing.html" class="active"><strong aria-hidden="true">10.</strong> Multiplexing</a></li><li class="chapter-item expanded "><a href="faq.html"><strong aria-hidden="true">11.</strong> F.A.Q.</a></li><li class="chapter-item expanded "><a href="help.html"><strong aria-hidden="true">12.</strong> Getting Help</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Wez's Terminal Emulator</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <p><strong>Notice:</strong> <em>multiplexing is still a young feature and is evolving rapidly.
+Your feedback is welcomed!</em></p>
+<h2><a class="header" href="#multiplexing" id="multiplexing">Multiplexing</a></h2>
+<p>The out-of-the-box experience with <code>wezterm</code> allows you to multiplex local tabs
+and windows which will persist until they are closed.  With a little extra
+configuration you can enable local terminal multiplexing with features similar
+to those in <a href="https://github.com/tmux/tmux/wiki">tmux</a> or <a href="https://en.wikipedia.org/wiki/GNU_Screen">screen</a>.</p>
+<p>Multiplexing in <code>wezterm</code> is based around the concept of <em>multiplexing domains</em>;
+a domain is a distinct set of windows and tabs.  When wezterm starts up it
+creates a default <em>local domain</em> to manage the windows and tabs in the UI, but it
+can also be configured to start or connect to any number of additional domains.</p>
+<p>Once connected to a domain, <code>wezterm</code> can attach its windows and tabs to the
+local native UI, providing a more natural experience for interacting with
+the mouse, clipboard and scrollback features of the terminal.</p>
+<p>Key bindings allow you to spawn new tabs in the default local domain,
+the domain of the current tab, or a specific numbered domain.</p>
+<h2><a class="header" href="#ssh-domains" id="ssh-domains">SSH Domains</a></h2>
+<p><em>wezterm also supports <a href="ssh.html">regular ad-hoc ssh connections</a>.
+This section of the docs refers to running a wezterm daemon on the remote end
+of a multiplexing session that uses ssh as a channel</em></p>
+<p>A connection to a remote wezterm multiplexer made via an ssh connection is
+referred to as an <em>SSH domain</em>.  <strong>A compatible version of wezterm must be
+installed on the remote system in order to use SSH domains</strong>.
+SSH domains are supported on all systems via libssh2.</p>
+<p>To configure an SSH domain, place something like the following in
+your <code>.wezterm.lua</code> file:</p>
+<pre><code class="language-lua">return {
+  ssh_domains = {
+    {
+      -- This name identifies the domain
+      name = &quot;my.server&quot;,
+      -- The address to connect to
+      remote_address = &quot;192.168.1.1&quot;,
+      -- The username to use on the remote host
+      username = &quot;wez&quot;,
+    }
+  }
+}
+</code></pre>
+<p>To connect to the system, run:</p>
+<pre><code class="language-bash">$ wezterm connect my.server
+</code></pre>
+<p>This will launch an SSH session that connects to the specified address
+and may pop up authentication dialogs (using SSH keys for auth is
+strongly recommended!).  Once connected, it will attempt to spawn
+the wezterm multiplexer daemon on the remote host and connect to
+it via a unix domain socket using a similar mechanism to that
+described in the <em>Unix Domains</em> section below.</p>
+<h2><a class="header" href="#unix-domains" id="unix-domains">Unix Domains</a></h2>
+<p>A connection to a multiplexer made via a unix socket is referred to
+as a <em>unix domain</em>.  Unix domains are supported on all systems,
+<a href="https://devblogs.microsoft.com/commandline/af_unix-comes-to-windows/">even Windows</a>
+and are a way to connect the native win32 GUI into the Windows Subsystem for Linux (WSL).</p>
+<p>The bare minimum configuration to enable a unix domain is this, which will
+spawn a server if needed and then connect the gui to it automatically
+when wezterm is launched:</p>
+<pre><code class="language-lua">return {
+  unix_domains = {
+    {
+      name = &quot;unix&quot;,
+      connect_automatically = true,
+    }
+  }
+}
+</code></pre>
+<p>If you prefer to connect manually, omit the <code>connect_automatically</code> setting
+(or set it to <code>false</code>) and then run:</p>
+<pre><code class="language-bash">$ wezterm connect unix
+</code></pre>
+<p>The possible configuration values are:</p>
+<pre><code class="language-lua">return {
+  unix_domains = {
+    {
+      name = &quot;unix&quot;,
+      -- If true, connect to this unix domain when `wezterm` is started
+      connect_automatically = true,
+
+      -- The path to the socket.  If unspecified, a resonable default
+      -- value will be computed.
+
+      -- socket_path = &quot;/some/path&quot;,
+
+      -- If true, do not attempt to start this server if we try and fail to
+      -- connect to it.
+
+      -- no_serve_automatically = false,
+
+      -- If true, bypass checking for secure ownership of the
+      -- socket_path.  This is not recommended on a multi-user
+      -- system, but is useful for example when running the
+      -- server inside a WSL container but with the socket
+      -- on the host NTFS volume.
+
+      -- skip_permissions_check = false,
+
+    }
+  }
+}
+</code></pre>
+<h3><a class="header" href="#connecting-into-windows-subsystem-for-linux" id="connecting-into-windows-subsystem-for-linux">Connecting into Windows Subsystem for Linux</a></h3>
+<p>Inside your WSL instance, configure <code>.wezterm.lua</code> with this snippet:</p>
+<pre><code class="language-lua">return {
+  unix_domains = {
+    {
+      name = &quot;wsl&quot;
+      -- Override the default path to match the default on the host win32
+      -- filesystem.  This will allow the host to connect into the WSL
+      -- container.
+      socket_path = &quot;/mnt/c/Users/USERNAME/.local/share/wezterm/sock&quot;,
+      -- NTFS permissions will always be &quot;wrong&quot;, so skip that check
+      skip_permissions_check = true,
+    }
+  }
+}
+</code></pre>
+<p>In the host win32 configuration, use this snippet:</p>
+<pre><code class="language-lua">return {
+  unix_domains = {
+    {
+      name = &quot;wsl&quot;,
+      connect_automatically = true,
+      serve_command = [&quot;wsl&quot;, &quot;wezterm&quot;, &quot;start&quot;, &quot;--daemonize&quot;, &quot;--front-end&quot;, &quot;MuxServer&quot;],
+    }
+  }
+}
+</code></pre>
+<p>Now when you start wezterm you'll be presented with a WSL tab.</p>
+<p>You can also set <code>connect_automatically = false</code> and use:</p>
+<pre><code class="language-bash">$ wezterm connect wsl
+</code></pre>
+<p>to manually connect into your WSL instance.</p>
+<h2><a class="header" href="#tls-domains" id="tls-domains">TLS Domains</a></h2>
+<p>A connection to a multiplexer made via a <a href="https://en.wikipedia.org/wiki/Transport_Layer_Security">TLS</a>
+encrypted TCP connection is referred to as a <em>TLS Domain</em>.</p>
+<p>Starting with version <code>20200202-180558-2489abf9</code>, wezterm can bootstrap a TLS
+session by performing an initial connection via SSH to start the wezterm
+multiplexer on the remote host and securely obtain a key.  Once bootstrapped,
+the client will use a TLS protected TCP connection to communicate with the
+server.</p>
+<h3><a class="header" href="#configuring-the-client" id="configuring-the-client">Configuring the client</a></h3>
+<p>For each server that you wish to connect to, add a client section like this:</p>
+<pre><code class="language-lua">return {
+  tls_clients = {
+    {
+      -- A handy alias for this session; you will use `wezterm connect server.name`
+      -- to connect to it.
+      name = &quot;server.name&quot;,
+      -- The host:port for the remote host
+      remote_address = &quot;server.hostname:8080&quot;,
+      -- The value can be &quot;user@host:port&quot;; it accepts the same syntax as the
+      -- `wezterm ssh` subcommand.
+      bootstrap_via_ssh = &quot;server.hostname&quot;,
+    }
+  }
+}
+</code></pre>
+<h3><a class="header" href="#configuring-the-server" id="configuring-the-server">Configuring the server</a></h3>
+<pre><code class="language-lua">return {
+  tls_servers = {
+    {
+      -- The host:port combination on which the server will listen
+      -- for connections
+      bind_address = &quot;server.hostname:8080&quot;
+    }
+  }
+}
+</code></pre>
+<h3><a class="header" href="#connecting" id="connecting">Connecting</a></h3>
+<p>On the client, running this will connect to the server, start up
+the multiplexer and obtain a certificate for the TLS connection.
+A connection window will show the progress and may prompt you for
+SSH authentication.  Once the connection has been initiated, wezterm
+will automatically reconnect using the certificate it obtained during
+bootstrapping if your connection was interrupted and resume your
+remote terminal session</p>
+<pre><code class="language-bash">$ wezterm connect server.name
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="serial.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="faq.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="serial.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="faq.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+        
+        
+        <script type="text/javascript">
+            window.playpen_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

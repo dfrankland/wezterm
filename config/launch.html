@@ -1,0 +1,368 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js navy">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Launching Programs - Wez's Terminal Emulator</title>
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+        <link rel="stylesheet" href="../custom.css">
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">wezterm</a></li><li class="chapter-item expanded "><a href="../installation.html"><strong aria-hidden="true">1.</strong> Install</a></li><li class="chapter-item expanded "><a href="../features.html"><strong aria-hidden="true">2.</strong> Features</a></li><li class="chapter-item expanded "><a href="../changelog.html"><strong aria-hidden="true">3.</strong> Change Log</a></li><li class="chapter-item expanded "><a href="../config/files.html"><strong aria-hidden="true">4.</strong> Configuration</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../config/launch.html" class="active"><strong aria-hidden="true">4.1.</strong> Launching Programs</a></li><li class="chapter-item expanded "><a href="../config/fonts.html"><strong aria-hidden="true">4.2.</strong> Fonts</a></li><li class="chapter-item expanded "><a href="../config/font-shaping.html"><strong aria-hidden="true">4.3.</strong> Font Shaping</a></li><li class="chapter-item expanded "><a href="../config/misc.html"><strong aria-hidden="true">4.4.</strong> Misc</a></li><li class="chapter-item expanded "><a href="../config/keys.html"><strong aria-hidden="true">4.5.</strong> Key &amp; Mouse Binding</a></li><li class="chapter-item expanded "><a href="../config/appearance.html"><strong aria-hidden="true">4.6.</strong> Colors &amp; Appearance</a></li><li class="chapter-item expanded "><a href="../config/lua.html"><strong aria-hidden="true">4.7.</strong> Lua Reference</a></li></ol></li><li class="chapter-item expanded "><a href="../hyperlinks.html"><strong aria-hidden="true">5.</strong> Hyperlinks</a></li><li class="chapter-item expanded "><a href="../shell-integration.html"><strong aria-hidden="true">6.</strong> Shell Integration</a></li><li class="chapter-item expanded "><a href="../imgcat.html"><strong aria-hidden="true">7.</strong> iTerm Image Protocol</a></li><li class="chapter-item expanded "><a href="../ssh.html"><strong aria-hidden="true">8.</strong> SSH</a></li><li class="chapter-item expanded "><a href="../serial.html"><strong aria-hidden="true">9.</strong> Serial Ports &amp; Arduino</a></li><li class="chapter-item expanded "><a href="../multiplexing.html"><strong aria-hidden="true">10.</strong> Multiplexing</a></li><li class="chapter-item expanded "><a href="../faq.html"><strong aria-hidden="true">11.</strong> F.A.Q.</a></li><li class="chapter-item expanded "><a href="../help.html"><strong aria-hidden="true">12.</strong> Getting Help</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Wez's Terminal Emulator</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2><a class="header" href="#launching-programs" id="launching-programs">Launching Programs</a></h2>
+<p>By default, when opening new tabs or windows, your shell will be spawned.</p>
+<p>Your shell is determined by the following rules:</p>
+<h3><a class="header" href="#on-posix-systems" id="on-posix-systems">On Posix Systems</a></h3>
+<ol>
+<li>The value of the <code>$SHELL</code> environment variable is used if it is set</li>
+<li>Otherwise, it will resolve your current uid and try to look up your
+home directory from the password database.</li>
+</ol>
+<p><code>wezterm</code> will spawn the shell and pass <code>-l</code> as an argument to request
+a login shell.  A login shell generally loads additional startup files
+and sets up more environment than a non-login shell.</p>
+<p>Note: if you have recently changed your shell using <code>chsh</code> and you
+have <code>$SHELL</code> set in the environment, you will need to sign out and
+sign back in again for the environment to pick up your new <code>$SHELL</code>
+value.</p>
+<h3><a class="header" href="#on-windows-systems" id="on-windows-systems">On Windows Systems</a></h3>
+<ol>
+<li>The value of the <code>%COMSPEC%</code> environment variable is used if it is set.</li>
+<li>Otherwise, <code>cmd.exe</code></li>
+</ol>
+<h2><a class="header" href="#changing-the-default-program" id="changing-the-default-program">Changing the default program</a></h2>
+<p>If you'd like <code>wezterm</code> to run a different program than the shell as
+described above, you can use the <code>default_prog</code> config setting to specify
+the argument array; the array allows specifying the program and arguments
+portably:</p>
+<pre><code class="language-lua">return {
+  -- Spawn a fish shell in login mode
+  default_prog = {&quot;/usr/local/bin/fish&quot;, &quot;-l&quot;},
+}
+</code></pre>
+<h2><a class="header" href="#launching-a-different-program-as-a-one-off-via-the-cli" id="launching-a-different-program-as-a-one-off-via-the-cli">Launching a different program as a one off via the CLI</a></h2>
+<p>If you want to make a shortcut for your desktop environment that will,
+for example, open an editor in wezterm you can use the <code>start</code> subcommand
+to launch it.  This example opens up a new terminal window running vim
+to edit your wezterm configuration:</p>
+<pre><code class="language-bash">wezterm start -- vim ~/.wezterm.lua
+</code></pre>
+<h2><a class="header" href="#passing-environment-variables-to-the-spawned-program" id="passing-environment-variables-to-the-spawned-program">Passing Environment variables to the spawned program</a></h2>
+<p>The <code>set_environment_variables</code> configuration setting can be used to
+add environment variables to the environment of the spawned program.</p>
+<p>The behavior is to take the environment of the <code>wezterm</code> process
+and then set the specified variables for the spawned process.</p>
+<pre><code class="language-lua">return {
+  set_environment_variables = {
+    -- This changes the default prompt for cmd.exe to report the
+    -- current directory using OSC 7, show the current time and
+    -- the current directory colored in the prompt.
+    prompt = &quot;$E]7;file://localhost/$P$E\\$E[32m$T$E[0m $E[35m$P$E[36m$_$G$E[0m &quot;
+  },
+}
+</code></pre>
+<h1><a class="header" href="#the-launcher-menu" id="the-launcher-menu">The Launcher Menu</a></h1>
+<p>The launcher menu is accessed from the new tab button in the tab bar UI; the
+<code>+</code> button to the right of the tabs.  Left clicking on the button will spawn
+a new tab, but right clicking on it will open the launcher menu.  You may also
+bind a key to the <code>ShowLauncher</code> action to trigger the menu.</p>
+<p>The launcher menu by default lists the various multiplexer domains and offers
+the option of connecting and spawning tabs/windows in those domains.</p>
+<p><em>Since 20200503-171512-b13ef15f</em>: You can define you own entries using the
+<code>launch_menu</code> configuration setting.  The snippet below adds two new entries to
+the menu; one that runs the <code>top</code> program to monitor process activity and a
+second one that explicitly launches the <code>bash</code> shell.</p>
+<pre><code class="language-lua">return {
+  launch_menu = {
+    {
+      args = {&quot;top&quot;},
+    },
+    {
+      -- Optional label to show in the launcher. If omitted, a label
+      -- is derived from the `args`
+      label = &quot;Bash&quot;,
+      -- The argument array to spawn.  If omitted the default program
+      -- will be used as described in the documentation above
+      args = {&quot;bash&quot;, &quot;-l&quot;},
+
+      -- You can specify an alternative current workding directory;
+      -- if you don't specify one then a default based on the OSC 7
+      -- escape sequence will be used (see the Shell Integration
+      -- docs), falling back to the home directory.
+      -- cwd = &quot;/some/path&quot;
+
+      -- You can override environment variables just for this command
+      -- by setting this here.  It has the same semantics as the main
+      -- set_environment_variables configuration option described above
+      -- set_environment_variables = { FOO = &quot;bar&quot; },
+    },
+  }
+}
+</code></pre>
+<img src="../screenshots/launch-menu.png" alt="Screenshot">
+<p>Here's a fancy example that will add some helpful entries to the launcher
+menu when running on Windows:</p>
+<pre><code class="language-lua">local wezterm = require 'wezterm';
+
+local launch_menu = {}
+
+if wezterm.target_triple == &quot;x86_64-pc-windows-msvc&quot; then
+  table.insert(launch_menu, {
+    label = &quot;PowerShell&quot;,
+    args = {&quot;powershell.exe&quot;, &quot;-NoLogo&quot;},
+  })
+
+  -- Find installed visual studio version(s) and add their compilation
+  -- environment command prompts to the menu
+  for _, vsvers in ipairs(wezterm.glob(&quot;Microsoft Visual Studio/20*&quot;, &quot;C:/Program Files (x86)&quot;)) do
+    local year = vsvers:gsub(&quot;Microsoft Visual Studio/&quot;, &quot;&quot;)
+    table.insert(launch_menu, {
+      label = &quot;x64 Native Tools VS &quot; .. year,
+      args = {&quot;cmd.exe&quot;, &quot;/k&quot;, &quot;C:/Program Files (x86)/&quot; .. vsvers .. &quot;/BuildTools/VC/Auxiliary/Build/vcvars64.bat&quot;},
+    })
+  end
+
+  -- Enumerate any WSL distributions that are installed and add those to the menu
+  local success, wsl_list, wsl_err = wezterm.run_child_process({&quot;wsl.exe&quot;, &quot;-l&quot;})
+  -- `wsl.exe -l` has a bug where it always outputs utf16:
+  -- https://github.com/microsoft/WSL/issues/4607
+  -- So we get to convert it
+  wsl_list = wezterm.utf16_to_utf8(wsl_list)
+
+  for idx, line in ipairs(wezterm.split_by_newlines(wsl_list)) do
+    -- Skip the first line of output; it's just a header
+    if idx &gt; 1 then
+      -- Remove the &quot;(Default)&quot; marker from the default line to arrive
+      -- at the distribution name on its own
+      local distro = line:gsub(&quot; %(Default%)&quot;, &quot;&quot;)
+
+      -- Add an entry that will spawn into the distro with the default shell
+      table.insert(launch_menu, {
+        label = distro .. &quot; (WSL default shell)&quot;,
+        args = {&quot;wsl.exe&quot;, &quot;--distribution&quot;, distro},
+      })
+
+      -- Here's how to jump directly into some other program; in this example
+      -- its a shell that probably isn't the default, but it could also be
+      -- any other program that you want to run in that environment
+      table.insert(launch_menu, {
+        label = distro .. &quot; (WSL zsh login shell)&quot;,
+        args = {&quot;wsl.exe&quot;, &quot;--distribution&quot;, distro, &quot;--exec&quot;, &quot;/bin/zsh&quot;, &quot;-l&quot;},
+      })
+    end
+  end
+end
+
+return {
+  launch_menu = launch_menu,
+}
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="../config/files.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="../config/fonts.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="../config/files.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="../config/fonts.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+        
+        
+        <script type="text/javascript">
+            window.playpen_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

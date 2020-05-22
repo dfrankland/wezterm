@@ -1,0 +1,441 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js navy">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Lua Reference - Wez's Terminal Emulator</title>
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+        <link rel="stylesheet" href="../custom.css">
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">wezterm</a></li><li class="chapter-item expanded "><a href="../installation.html"><strong aria-hidden="true">1.</strong> Install</a></li><li class="chapter-item expanded "><a href="../features.html"><strong aria-hidden="true">2.</strong> Features</a></li><li class="chapter-item expanded "><a href="../changelog.html"><strong aria-hidden="true">3.</strong> Change Log</a></li><li class="chapter-item expanded "><a href="../config/files.html"><strong aria-hidden="true">4.</strong> Configuration</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../config/launch.html"><strong aria-hidden="true">4.1.</strong> Launching Programs</a></li><li class="chapter-item expanded "><a href="../config/fonts.html"><strong aria-hidden="true">4.2.</strong> Fonts</a></li><li class="chapter-item expanded "><a href="../config/font-shaping.html"><strong aria-hidden="true">4.3.</strong> Font Shaping</a></li><li class="chapter-item expanded "><a href="../config/misc.html"><strong aria-hidden="true">4.4.</strong> Misc</a></li><li class="chapter-item expanded "><a href="../config/keys.html"><strong aria-hidden="true">4.5.</strong> Key &amp; Mouse Binding</a></li><li class="chapter-item expanded "><a href="../config/appearance.html"><strong aria-hidden="true">4.6.</strong> Colors &amp; Appearance</a></li><li class="chapter-item expanded "><a href="../config/lua.html" class="active"><strong aria-hidden="true">4.7.</strong> Lua Reference</a></li></ol></li><li class="chapter-item expanded "><a href="../hyperlinks.html"><strong aria-hidden="true">5.</strong> Hyperlinks</a></li><li class="chapter-item expanded "><a href="../shell-integration.html"><strong aria-hidden="true">6.</strong> Shell Integration</a></li><li class="chapter-item expanded "><a href="../imgcat.html"><strong aria-hidden="true">7.</strong> iTerm Image Protocol</a></li><li class="chapter-item expanded "><a href="../ssh.html"><strong aria-hidden="true">8.</strong> SSH</a></li><li class="chapter-item expanded "><a href="../serial.html"><strong aria-hidden="true">9.</strong> Serial Ports &amp; Arduino</a></li><li class="chapter-item expanded "><a href="../multiplexing.html"><strong aria-hidden="true">10.</strong> Multiplexing</a></li><li class="chapter-item expanded "><a href="../faq.html"><strong aria-hidden="true">11.</strong> F.A.Q.</a></li><li class="chapter-item expanded "><a href="../help.html"><strong aria-hidden="true">12.</strong> Getting Help</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Wez's Terminal Emulator</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2><a class="header" href="#lua-reference" id="lua-reference">Lua Reference</a></h2>
+<p>This section documents the various lua functions that are provided to
+the configuration file.  These are provided by the <code>wezterm</code> module that
+must be imported into your configuration file:</p>
+<pre><code class="language-lua">local wezterm = require 'wezterm';
+return {
+  font = wezterm.font(&quot;JetBrains Mono&quot;),
+}
+</code></pre>
+<h3><a class="header" href="#making-your-own-lua-modules" id="making-your-own-lua-modules">Making your own Lua Modules</a></h3>
+<p>If you'd like to break apart your configuration into multiple files, you'll
+be interested in this information.</p>
+<p>The <code>package.path</code> is configured with the following paths in this order:</p>
+<ul>
+<li>On Windows: a <code>wezterm_modules</code> dir in the same directory as <code>wezterm.exe</code></li>
+<li><code>~/.config/wezterm</code></li>
+<li><code>~/.wezterm</code></li>
+<li>A system specific set of paths which may (or may not!) find locally installed lua modules</li>
+</ul>
+<p>That means that if you wanted to break your config up into a <code>helpers.lua</code> file
+you would place it in <code>~/.config/wezterm/helpers.lua</code> with contents like this:</p>
+<pre><code class="language-lua">-- I am helpers.lua and I should live in ~/.config/wezterm/helpers.lua
+
+local wezterm = require 'wezterm';
+
+-- This is the module table that we will export
+local module = {}
+
+-- This function is private to this module and is not visible
+-- outside.
+local function private_helper()
+  wezterm.log_error(&quot;hello!&quot;)
+end
+
+-- define a function in the module table.
+-- Only functions defined in `module` will be exported to
+-- code that imports this module
+function module.my_function()
+  private_helper()
+end
+
+-- return our module table
+return module
+</code></pre>
+<p>and then in your <code>wezterm.lua</code>
+you would use it like this:</p>
+<pre><code class="language-lua">local helpers = require 'helpers';
+helpers.my_function()
+</code></pre>
+<h3><a class="header" href="#weztermconfig_dir" id="weztermconfig_dir"><code>wezterm.config_dir</code></a></h3>
+<p>This constant is set to the path to the directory in which your <code>wezterm.lua</code>
+configuration file was found.</p>
+<pre><code class="language-lua">local wezterm = require 'wezterm';
+wezterm.log_error(&quot;Config Dir &quot; .. wezterm.config_dir)
+</code></pre>
+<h3><a class="header" href="#weztermtarget_triple" id="weztermtarget_triple"><code>wezterm.target_triple</code></a></h3>
+<p>This constant is set to the <a href="https://forge.rust-lang.org/release/platform-support.html">Rust target
+triple</a> for the
+platform on which <code>wezterm</code> was built.  This can be useful when you wish to
+conditionally adjust your configuration based on the platform.</p>
+<pre><code class="language-lua">local wezterm = require 'wezterm';
+
+if wezterm.target_triple == &quot;x86_64-pc-windows-msvc&quot; then
+  -- We are running on Windows; maybe we emit different
+  -- key assignments here?
+end
+</code></pre>
+<p>The most common triples are:</p>
+<ul>
+<li><code>x86_64-pc-windows-msvc</code> - Windows</li>
+<li><code>x86_64-apple-darwin</code> - macOS</li>
+<li><code>x86_64-unknown-linux-gnu</code> - Linux</li>
+</ul>
+<h3><a class="header" href="#weztermversion" id="weztermversion"><code>wezterm.version</code></a></h3>
+<p>This constant is set to the <code>wezterm</code> version string that is also reported
+by running <code>wezterm -V</code>.  This can potentially be used to adjust configuration
+according to the installed version.</p>
+<p>The version string looks like <code>20200406-151651-5b700e4</code>.  You can compare the
+strings lexicographically if you wish to test whether a given version is newer
+than another; the first component is the date on which the release was made,
+the second component is the time and the final component is a git hash.</p>
+<pre><code class="language-lua">local wezterm = require 'wezterm';
+wezterm.log_error(&quot;Version &quot; .. wezterm.version)
+</code></pre>
+<h3><a class="header" href="#weztermhome_dir" id="weztermhome_dir"><code>wezterm.home_dir</code></a></h3>
+<p>This constant is set to the home directory of the user running <code>wezterm</code>.</p>
+<pre><code class="language-lua">local wezterm = require 'wezterm';
+wezterm.log_error(&quot;Home &quot; .. wezterm.home_dir)
+</code></pre>
+<h3><a class="header" href="#weztermrunning_under_wsl" id="weztermrunning_under_wsl"><code>wezterm.running_under_wsl()</code></a></h3>
+<p>This function returns a boolean indicating whether we believe that we are
+running in a Windows Services for Linux (WSL) container.  In such an
+environment the <code>wezterm.target_triple</code> will indicate that we are running in
+Linux but there will be some slight differences in system behavior (such as
+filesystem capabilities) that you may wish to probe for in the configuration.</p>
+<pre><code class="language-lua">local wezterm = require 'wezterm';
+wezterm.log_error(&quot;System &quot; .. wezterm.target_triple .. &quot; &quot; ..
+  tostring(wezterm.running_under_wsl()))
+</code></pre>
+<h3><a class="header" href="#weztermlog_errormsg" id="weztermlog_errormsg"><code>wezterm.log_error(msg)</code></a></h3>
+<p>This function logs the provided message string through wezterm's logging layer.
+If you started wezterm from a terminal that text will print to the stdout of
+that terminal.  If running as a daemon for the multiplexer server then it will
+be logged to the daemon output path.</p>
+<pre><code class="language-lua">local wezterm = require 'wezterm';
+wezterm.log_error(&quot;Hello!&quot;);
+</code></pre>
+<h3><a class="header" href="#weztermfontfamily--attributes" id="weztermfontfamily--attributes"><code>wezterm.font(family [, attributes])</code></a></h3>
+<p>This function constructs a lua table that corresponds to the internal <code>FontAttributes</code>
+struct that is used to select a single named font:</p>
+<pre><code class="language-lua">local wezterm = require 'wezterm';
+
+return {
+  font = wezterm.font(&quot;JetBrains Mono&quot;),
+}
+</code></pre>
+<p>The second parameter is an optional table that can be used to specify some
+attributes; the following keys are allowed:</p>
+<ul>
+<li><code>bold</code> - whether to select a bold variant of the font (default: <code>false</code>)</li>
+<li><code>italic</code> - whether to select an italic variant of the font (default: <code>false</code>)</li>
+</ul>
+<pre><code class="language-lua">local wezterm = require 'wezterm';
+
+return {
+  font = wezterm.font(&quot;JetBrains Mono&quot;, {bold=true}),
+}
+</code></pre>
+<h3><a class="header" href="#weztermfont_with_fallbackfamilies--attributes" id="weztermfont_with_fallbackfamilies--attributes"><code>wezterm.font_with_fallback(families [, attributes])</code></a></h3>
+<p>This function constructs a lua table that configures a font with fallback processing.
+Glyphs are looked up in the first font in the list but if missing the next font is
+checked and so on.</p>
+<p>The first parameter is a table listing the fonts in their preferred order:</p>
+<pre><code class="language-lua">local wezterm = require 'wezterm';
+
+return {
+  font = wezterm.font_with_fallback({&quot;JetBrains Mono&quot;, &quot;Noto Color Emoji&quot;}),
+}
+</code></pre>
+<p>The second parameter behaves the same as that of <code>wezterm.font</code>.</p>
+<h3><a class="header" href="#weztermhostname" id="weztermhostname"><code>wezterm.hostname()</code></a></h3>
+<p>This function returns the current hostname of the system that is running wezterm.
+This can be useful to adjust configuration based on the host.</p>
+<p>Note that environments that use DHCP and have many clients and short leases may
+make it harder to rely on the hostname for this purpose.</p>
+<pre><code class="language-lua">local wezterm = require 'wezterm';
+local hostname = wezterm.hostname();
+
+local font_size;
+if hostname == &quot;pixelbookgo-localdomain&quot; then
+  -- Use a bigger font on the smaller screen of my PixelBook Go
+  font_size = 12.0;
+else
+  font_size = 10.0;
+end
+
+return {
+  font_size = font_size
+}
+</code></pre>
+<h3><a class="header" href="#weztermread_dirpath" id="weztermread_dirpath"><code>wezterm.read_dir(path)</code></a></h3>
+<p><em>Since: 20200503-171512-b13ef15f</em></p>
+<p>This function returns an array containing the absolute file names of the
+directory specified.  Due to limitations in the lua bindings, all of the paths
+must be able to be represented as UTF-8 or this function will generate an
+error.</p>
+<pre><code class="language-lua">local wezterm = require 'wezterm';
+
+-- logs the names of all of the entries under `/etc`
+for _, v in ipairs(wezterm.read_dir(&quot;/etc&quot;)) do
+  wezterm.log_error(&quot;entry: &quot; .. v)
+end
+</code></pre>
+<h3><a class="header" href="#weztermglobpattern--relative_to" id="weztermglobpattern--relative_to"><code>wezterm.glob(pattern [, relative_to])</code></a></h3>
+<p><em>Since: 20200503-171512-b13ef15f</em></p>
+<p>This function evalutes the glob <code>pattern</code> and returns an array containing the
+absolute file names of the matching results.  Due to limitations in the lua
+bindings, all of the paths must be able to be represented as UTF-8 or this
+function will generate an error.</p>
+<p>The optional <code>relative_to</code> parameter can be used to make the results relative
+to a path.  If the results have the same prefix as <code>relative_to</code> then it will
+be removed from the returned path.</p>
+<pre><code class="language-lua">local wezterm = require 'wezterm';
+
+-- logs the names of all of the conf files under `/etc`
+for _, v in ipairs(wezterm.glob(&quot;/etc/*.conf&quot;)) do
+  wezterm.log_error(&quot;entry: &quot; .. v)
+end
+</code></pre>
+<h3><a class="header" href="#weztermrun_child_processargs" id="weztermrun_child_processargs"><code>wezterm.run_child_process(args)</code></a></h3>
+<p><em>Since: 20200503-171512-b13ef15f</em></p>
+<p>This function accepts an argument list; it will attempt to spawn that command
+and will return a tuple consisting of the boolean success of the invocation,
+the stdout data and the stderr data.</p>
+<pre><code class="language-lua">local wezterm = require 'wezterm';
+
+local success, stdout, stderr = wezterm.run_child_process({&quot;ls&quot;, &quot;-l&quot;})
+</code></pre>
+<h3><a class="header" href="#weztermsplit_by_newlinesstr" id="weztermsplit_by_newlinesstr"><code>wezterm.split_by_newlines(str)</code></a></h3>
+<p><em>Since: 20200503-171512-b13ef15f</em></p>
+<p>This function takes the input string and splits it by newlines (both <code>\n</code> and <code>\r\n</code>
+are recognized as newlines) and returns the result as an array of strings that
+have the newlines removed.</p>
+<pre><code class="language-lua">local wezterm = require 'wezterm';
+
+local example = &quot;hello\nthere\n&quot;;
+
+for _, line in ipairs(wezterm.split_by_newlines(example)) do
+  wezterm.log_error(line)
+end
+</code></pre>
+<h3><a class="header" href="#weztermutf16_to_utf8str" id="weztermutf16_to_utf8str"><code>wezterm.utf16_to_utf8(str)</code></a></h3>
+<p><em>Since: 20200503-171512-b13ef15f</em></p>
+<p>This function is overly specific and exists primarily to workaround
+<a href="https://github.com/microsoft/WSL/issues/4456">this wsl.exe issue</a>.</p>
+<p>It takes as input a string and attempts to convert it from utf16 to utf8.</p>
+<pre><code class="language-lua">local wezterm = require 'wezterm';
+
+local success, wsl_list, wsl_err = wezterm.run_child_process({&quot;wsl.exe&quot;, &quot;-l&quot;})
+wsl_list = wezterm.utf16_to_utf8(wsl_list)
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="../config/appearance.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="../hyperlinks.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="../config/appearance.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="../hyperlinks.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+        
+        
+        <script type="text/javascript">
+            window.playpen_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

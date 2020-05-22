@@ -1,0 +1,380 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js navy">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Fonts - Wez's Terminal Emulator</title>
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+        <link rel="stylesheet" href="../custom.css">
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">wezterm</a></li><li class="chapter-item expanded "><a href="../installation.html"><strong aria-hidden="true">1.</strong> Install</a></li><li class="chapter-item expanded "><a href="../features.html"><strong aria-hidden="true">2.</strong> Features</a></li><li class="chapter-item expanded "><a href="../changelog.html"><strong aria-hidden="true">3.</strong> Change Log</a></li><li class="chapter-item expanded "><a href="../config/files.html"><strong aria-hidden="true">4.</strong> Configuration</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../config/launch.html"><strong aria-hidden="true">4.1.</strong> Launching Programs</a></li><li class="chapter-item expanded "><a href="../config/fonts.html" class="active"><strong aria-hidden="true">4.2.</strong> Fonts</a></li><li class="chapter-item expanded "><a href="../config/font-shaping.html"><strong aria-hidden="true">4.3.</strong> Font Shaping</a></li><li class="chapter-item expanded "><a href="../config/misc.html"><strong aria-hidden="true">4.4.</strong> Misc</a></li><li class="chapter-item expanded "><a href="../config/keys.html"><strong aria-hidden="true">4.5.</strong> Key &amp; Mouse Binding</a></li><li class="chapter-item expanded "><a href="../config/appearance.html"><strong aria-hidden="true">4.6.</strong> Colors &amp; Appearance</a></li><li class="chapter-item expanded "><a href="../config/lua.html"><strong aria-hidden="true">4.7.</strong> Lua Reference</a></li></ol></li><li class="chapter-item expanded "><a href="../hyperlinks.html"><strong aria-hidden="true">5.</strong> Hyperlinks</a></li><li class="chapter-item expanded "><a href="../shell-integration.html"><strong aria-hidden="true">6.</strong> Shell Integration</a></li><li class="chapter-item expanded "><a href="../imgcat.html"><strong aria-hidden="true">7.</strong> iTerm Image Protocol</a></li><li class="chapter-item expanded "><a href="../ssh.html"><strong aria-hidden="true">8.</strong> SSH</a></li><li class="chapter-item expanded "><a href="../serial.html"><strong aria-hidden="true">9.</strong> Serial Ports &amp; Arduino</a></li><li class="chapter-item expanded "><a href="../multiplexing.html"><strong aria-hidden="true">10.</strong> Multiplexing</a></li><li class="chapter-item expanded "><a href="../faq.html"><strong aria-hidden="true">11.</strong> F.A.Q.</a></li><li class="chapter-item expanded "><a href="../help.html"><strong aria-hidden="true">12.</strong> Getting Help</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Wez's Terminal Emulator</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h3><a class="header" href="#font-related-configuration" id="font-related-configuration">Font Related Configuration</a></h3>
+<p>By default, wezterm will use an appropriate system-specific method for
+locating the fonts that you specify using the options below.  In addition,
+if you configure the <code>font_dirs</code> option, wezterm will load fonts from that
+set of directories:</p>
+<pre><code class="language-lua">return {
+  -- This tells wezterm to look first for fonts in the directory named
+  -- `fonts` that is found alongside your `wezterm.toml` file.
+  -- As this option is an array, you may list multiple locations if
+  -- you wish.
+  font_dirs = {&quot;fonts&quot;},
+}
+</code></pre>
+<p>The following options impact how text is rendered:</p>
+<pre><code class="language-lua">return {
+  -- The font size, measured in points
+  font_size = 11.0,
+
+  -- The DPI to assume, measured in dots-per-inch
+  -- This is not automatically probed!  If you experience blurry text
+  -- or notice slight differences when comparing with other terminal
+  -- emulators, you may wish to tune this value!
+  dpi = 96.0,
+}
+</code></pre>
+<p>To select the font face you can use a helper function imported
+from the <code>wezterm</code> module:</p>
+<pre><code class="language-lua">local wezterm = require 'wezterm';
+
+return {
+  -- The font family name.  The default is &quot;Menlo&quot; on macOS,
+  -- &quot;Consolas&quot; on Windows and &quot;monospace&quot; on X11 based systems.
+  -- You may wish to download and try either &quot;JetBrains Mono&quot; or
+  -- &quot;Fira Code&quot; to enjoy ligatures without buying an expensive font!
+  font = wezterm.font(&quot;Operator Mono SSm Lig Medium&quot;),
+
+  -- You can specify some parameters to influence the font selection;
+  -- for example, this selects a Bold, Italic font variant.
+  font = wezterm.font(&quot;JetBrains Mono&quot;, {bold=true, italic=true})
+}
+</code></pre>
+<p>If you'd like to specify fallback fonts (eg: you've got a killer
+monospace font, but it doesn't have glyphs for the asian script
+that you sometimes work with), you can specify multiple fonts that
+wezterm will use in the order you specify:</p>
+<pre><code class="language-lua">local wezterm = require 'wezterm';
+return {
+  font = wezterm.font_with_fallback({
+    &quot;My Preferred Font&quot;,
+    -- This is searched for glyphs that aren't found in the first one
+    &quot;My second best font&quot;,
+    -- This is searched for glyphs that aren't found in either of
+    -- the first two
+    &quot;My third best font&quot;,
+  }),
+}
+</code></pre>
+<p>You may optionally specify rules that apply different font styling based on the
+attributes of the text rendered in the terminal.  Most users won't need to do
+this; these rules are useful when you have some unusual fonts or mixtures of
+fonts that you'd like to use.  The default is to auto-generate reasonable
+italic and bold styling based on the <code>font</code> configuration.</p>
+<p>If you do specify <code>font_rules</code>, they are applied in the order that they are
+specified in the configuration file, stopping with the first matching rule:</p>
+<pre><code class="language-lua">local wezterm = require 'wezterm';
+return {
+  font_rules = {
+    -- Define a rule that matches when italic text is shown
+    {
+      -- If specified, this rule matches when a cell's italic value exactly
+      -- matches this.  If unspecified, the attribute value is irrelevant
+      -- with respect to matching.
+      italic = true,
+
+      -- Match based on intensity: &quot;Bold&quot;, &quot;Normal&quot; and &quot;Half&quot; are supported
+      -- intensity = &quot;Normal&quot;,
+
+      -- Match based on underline: &quot;None&quot;, &quot;Single&quot;, and &quot;Double&quot; are supported
+      -- underline = &quot;None&quot;,
+
+      -- Match based on the blink attribute: &quot;None&quot;, &quot;Slow&quot;, &quot;Rapid&quot;
+      -- blink = &quot;None&quot;,
+
+      -- Match based on reverse video
+      -- reverse = false,
+
+      -- Match based on strikethrough
+      -- strikethrough = false,
+
+      -- Match based on the invisible attribute
+      -- invisible = false,
+
+      -- When the above attributes match, apply this font styling
+      font = wezterm.font(&quot;Operator Mono SSm Lig Medium&quot;, {italic=true}),
+    }
+  }
+}
+</code></pre>
+<p>Here's an example from my configuration file;</p>
+<pre><code class="language-lua">local wezterm = require 'wezterm';
+
+-- A helper function for my fallback fonts
+function font_with_fallback(name, params)
+  local names = {name, &quot;Noto Color Emoji&quot;, &quot;JetBrains Mono&quot;}
+  return wezterm.font_with_fallback(names, params)
+end
+
+return {
+  font = font_with_fallback(&quot;Operator Mono SSm Lig Medium&quot;),
+  font_rules= {
+    -- Select a fancy italic font for italic text
+    {
+      italic = true,
+      font = font_with_fallback(&quot;Operator Mono SSm Lig Medium Italic&quot;),
+    },
+
+    -- Similarly, a fancy bold+italic font
+    {
+      italic = true,
+      intensity = &quot;Bold&quot;,
+      font = font_with_fallback(&quot;Operator Mono SSm Lig Book Italic&quot;),
+    },
+
+    -- Make regular bold text a different color to make it stand out even more
+    {
+      intensity = &quot;Bold&quot;,
+      font = font_with_fallback(&quot;Operator Mono SSm Lig Bold&quot;, {foreground = &quot;tomato&quot;}),
+    },
+
+    -- For half-intensity text, use a lighter weight font
+    {
+      intensity = &quot;Half&quot;,
+      font = font_with_fallback(&quot;Operator Mono SSm Lig Light&quot;),
+    },
+  },
+}
+</code></pre>
+<p>There are a couple of additional advanced font configuration options:</p>
+<ul>
+<li><code>font_locator</code> - specifies the method by which system fonts are
+located and loaded.  You may specify <code>ConfigDirsOnly</code> to disable
+loading system fonts and use only the fonts found in the directories
+that you specify in your <code>font_dirs</code> configuration option.  Otherwise,
+it is recommended to omit this setting.</li>
+<li><code>font_shaper</code> - specifies the method by which text is mapped to glyphs
+in the available fonts.  The shaper is responsible for handling
+kerning, ligatures and emoji composition.  The default is <code>Harfbuzz</code>
+and we have very preliminary support for <code>Allsorts</code>.</li>
+<li><code>font_rasterizer</code> - specifies the method by which fonts are rendered
+on screen.  The only available implementation is <code>FreeType</code>.</li>
+</ul>
+<p>These options affect the appearance of the text.  <code>Subpixel</code> antialiasing
+is approximateley equivalent to ClearType rendering on Windows, but some
+people find that it appears blurry.  You may wish to try <code>Greyscale</code> in
+that case.</p>
+<pre><code class="language-lua">return {
+  font_antialias = &quot;Subpixel&quot;, -- None, Greyscale, Subpixel
+  font_hinting = &quot;Full&quot;,  -- None, Vertical, VerticalSubpixel, Full
+}
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="../config/launch.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="../config/font-shaping.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="../config/launch.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="../config/font-shaping.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+        
+        
+        <script type="text/javascript">
+            window.playpen_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

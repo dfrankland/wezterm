@@ -1,0 +1,351 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js navy">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Install - Wez's Terminal Emulator</title>
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+        <link rel="stylesheet" href="custom.css">
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">wezterm</a></li><li class="chapter-item expanded "><a href="installation.html" class="active"><strong aria-hidden="true">1.</strong> Install</a></li><li class="chapter-item expanded "><a href="features.html"><strong aria-hidden="true">2.</strong> Features</a></li><li class="chapter-item expanded "><a href="changelog.html"><strong aria-hidden="true">3.</strong> Change Log</a></li><li class="chapter-item expanded "><a href="config/files.html"><strong aria-hidden="true">4.</strong> Configuration</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="config/launch.html"><strong aria-hidden="true">4.1.</strong> Launching Programs</a></li><li class="chapter-item expanded "><a href="config/fonts.html"><strong aria-hidden="true">4.2.</strong> Fonts</a></li><li class="chapter-item expanded "><a href="config/font-shaping.html"><strong aria-hidden="true">4.3.</strong> Font Shaping</a></li><li class="chapter-item expanded "><a href="config/misc.html"><strong aria-hidden="true">4.4.</strong> Misc</a></li><li class="chapter-item expanded "><a href="config/keys.html"><strong aria-hidden="true">4.5.</strong> Key &amp; Mouse Binding</a></li><li class="chapter-item expanded "><a href="config/appearance.html"><strong aria-hidden="true">4.6.</strong> Colors &amp; Appearance</a></li><li class="chapter-item expanded "><a href="config/lua.html"><strong aria-hidden="true">4.7.</strong> Lua Reference</a></li></ol></li><li class="chapter-item expanded "><a href="hyperlinks.html"><strong aria-hidden="true">5.</strong> Hyperlinks</a></li><li class="chapter-item expanded "><a href="shell-integration.html"><strong aria-hidden="true">6.</strong> Shell Integration</a></li><li class="chapter-item expanded "><a href="imgcat.html"><strong aria-hidden="true">7.</strong> iTerm Image Protocol</a></li><li class="chapter-item expanded "><a href="ssh.html"><strong aria-hidden="true">8.</strong> SSH</a></li><li class="chapter-item expanded "><a href="serial.html"><strong aria-hidden="true">9.</strong> Serial Ports &amp; Arduino</a></li><li class="chapter-item expanded "><a href="multiplexing.html"><strong aria-hidden="true">10.</strong> Multiplexing</a></li><li class="chapter-item expanded "><a href="faq.html"><strong aria-hidden="true">11.</strong> F.A.Q.</a></li><li class="chapter-item expanded "><a href="help.html"><strong aria-hidden="true">12.</strong> Getting Help</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Wez's Terminal Emulator</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2><a class="header" href="#installing-on-windows" id="installing-on-windows">Installing on Windows</a></h2>
+<p>Windows 10 or later is required to run WezTerm.</p>
+<p><a href="https://github.com/wez/wezterm/releases/download/20200517-122836-92c201c6/WezTerm-windows-20200517-122836-92c201c6.zip" class="btn">Download for Windows</a>
+<a href="https://github.com/wez/wezterm/releases/download/nightly/WezTerm-windows-nightly.zip" class="btn">Nightly for Windows</a></p>
+<ol>
+<li>Download <a href="https://github.com/wez/wezterm/releases/download/20200517-122836-92c201c6/WezTerm-windows-20200517-122836-92c201c6.zip">Release</a></li>
+<li>Extract the zipfile and double-click <code>wezterm.exe</code> to run the UI</li>
+<li>Configuration instructions can be <a href="config/index.html">found here</a></li>
+</ol>
+<h3><a class="header" href="#for-scoop-users" id="for-scoop-users">For <code>Scoop</code> users</a></h3>
+<p>If you prefer to use the command line to manage installing software,
+then you may wish to try <a href="https://scoop.sh/">Scoop</a>.</p>
+<p>Wezterm is available from the &quot;Extras&quot; bucket and once you have installed
+scoop itself can be installed like so:</p>
+<pre><code class="language-bash">scoop bucket add extras
+scoop install wezterm
+</code></pre>
+<h2><a class="header" href="#installing-on-macos" id="installing-on-macos">Installing on macOS</a></h2>
+<p>The CI system builds the package on macOS Mojave (10.14).  It may run on earlier
+versions of macOS, but that has not been tested.</p>
+<p><a href="https://github.com/wez/wezterm/releases/download/20200517-122836-92c201c6/WezTerm-macos-20200517-122836-92c201c6.zip" class="btn">Download for macOS</a>
+<a href="https://github.com/wez/wezterm/releases/download/nightly/WezTerm-macos-nightly.zip" class="btn">Nightly for macOS</a></p>
+<ol>
+<li>Download <a href="https://github.com/wez/wezterm/releases/download/20200517-122836-92c201c6/WezTerm-macos-20200517-122836-92c201c6.zip">Release</a></li>
+<li>Extract the zipfile and drag the <code>WezTerm.app</code> bundle to your <code>Applications</code> folder</li>
+<li>First time around, you may need to right click and select <code>Open</code> to allow launching
+the application that your just downloaded from the internet.</li>
+<li>Subsequently, a simple double-click will launch the UI</li>
+<li>Configuration instructions can be <a href="config/index.html">found here</a></li>
+</ol>
+<h2><a class="header" href="#installing-on-linux-using-appimage" id="installing-on-linux-using-appimage">Installing on Linux using AppImage</a></h2>
+<p>WezTerm is available in <a href="https://appimage.org/">AppImage</a> format; a
+self-contained single file that doesn't require installation or
+any special privileges to run.</p>
+<p>Download and make the file executable and you're ready to run!</p>
+<p><a href="https://github.com/wez/wezterm/releases/download/20200517-122836-92c201c6/WezTerm-20200517-122836-92c201c6-Ubuntu16.04.AppImage" class="btn">AppImage</a>
+<a href="https://github.com/wez/wezterm/releases/download/nightly/WezTerm-nightly-Ubuntu16.04.AppImage" class="btn">Nightly AppImage</a></p>
+<pre><code class="language-bash">curl -LO https://github.com/wez/wezterm/releases/download/20200517-122836-92c201c6/WezTerm-20200517-122836-92c201c6-Ubuntu16.04.AppImage
+chmod +x WezTerm-20200517-122836-92c201c6-Ubuntu16.04.AppImage
+</code></pre>
+<p>You may then execute the appimage directly to launch wezterm, with no
+specific installation steps required:</p>
+<pre><code class="language-bash">./WezTerm-20200517-122836-92c201c6-Ubuntu16.04.AppImage
+</code></pre>
+<p>That said, you may wish to make it a bit more convenient:</p>
+<pre><code class="language-bash">mkdir ~/bin
+mv ./WezTerm-20200517-122836-92c201c6-Ubuntu16.04.AppImage ~/bin/wezterm
+~/bin/wezterm
+</code></pre>
+<ul>
+<li>Configuration instructions can be <a href="config/index.html">found here</a></li>
+</ul>
+<h2><a class="header" href="#installing-on-ubuntu-and-debian-based-systems" id="installing-on-ubuntu-and-debian-based-systems">Installing on Ubuntu and Debian-based Systems</a></h2>
+<p>The CI system builds <code>.deb</code> files for a variety of Ubuntu and Debian distributions.
+These are often compatible with other Debian style systems; if you don't find one
+that exactly matches your system you can try installing one from an older version
+of your distribution, or use one of the Debian packages linked below.  Failing that,
+you can try the AppImage download which should work on most Linux systems.</p>
+<table><thead><tr><th>Distro</th><th>Stable</th><th>Nightly</th></tr></thead><tbody>
+<tr><td>Ubuntu16</td><td><a href="https://github.com/wez/wezterm/releases/download/20200517-122836-92c201c6/wezterm-20200517-122836-92c201c6.Ubuntu16.04.deb">wezterm-20200517-122836-92c201c6.Ubuntu16.04.deb</a></td><td><a href="https://github.com/wez/wezterm/releases/download/nightly/wezterm-nightly.Ubuntu16.04.deb">wezterm-nightly.Ubuntu16.04.deb</a></td></tr>
+<tr><td>Ubuntu18</td><td><a href="https://github.com/wez/wezterm/releases/download/20200517-122836-92c201c6/wezterm-20200517-122836-92c201c6.Ubuntu18.04.deb">wezterm-20200517-122836-92c201c6.Ubuntu18.04.deb</a></td><td><a href="https://github.com/wez/wezterm/releases/download/nightly/wezterm-nightly.Ubuntu18.04.deb">wezterm-nightly.Ubuntu18.04.deb</a></td></tr>
+<tr><td>Ubuntu19</td><td><a href="https://github.com/wez/wezterm/releases/download/20200517-122836-92c201c6/wezterm-20200517-122836-92c201c6.Ubuntu19.10.deb">wezterm-20200517-122836-92c201c6.Ubuntu19.10.deb</a></td><td><a href="https://github.com/wez/wezterm/releases/download/nightly/wezterm-nightly.Ubuntu19.10.deb">wezterm-nightly.Ubuntu19.10.deb</a></td></tr>
+<tr><td>Ubuntu20</td><td>(not yet)</td><td><a href="https://github.com/wez/wezterm/releases/download/nightly/wezterm-nightly.Ubuntu20.04.deb">wezterm-nightly.Ubuntu20.04.deb</a></td></tr>
+<tr><td>Debian9</td><td><a href="https://github.com/wez/wezterm/releases/download/20200517-122836-92c201c6/wezterm-20200517-122836-92c201c6.Debian9.12.deb">wezterm-20200517-122836-92c201c6.Debian9.12.deb</a></td><td><a href="https://github.com/wez/wezterm/releases/download/nightly/wezterm-nightly.Debian9.12.deb">wezterm-nightly.Debian9.12.deb</a></td></tr>
+<tr><td>Debian10</td><td><a href="https://github.com/wez/wezterm/releases/download/20200517-122836-92c201c6/wezterm-20200517-122836-92c201c6.Debian10.deb">wezterm-20200517-122836-92c201c6.Debian10.deb</a></td><td><a href="https://github.com/wez/wezterm/releases/download/nightly/wezterm-nightly.Debian10.deb">wezterm-nightly.Debian10.deb</a></td></tr>
+</tbody></table>
+<p>To download and install from the CLI, you can use something like this, which
+shows how to install the Ubuntu 16 package:</p>
+<pre><code class="language-bash">curl -LO https://github.com/wez/wezterm/releases/download/20200517-122836-92c201c6/wezterm-20200517-122836-92c201c6.Ubuntu16.04.deb
+sudo apt install -y ./wezterm-20200517-122836-92c201c6.Ubuntu16.04.deb
+</code></pre>
+<ul>
+<li>The package installs <code>/usr/bin/wezterm</code> and <code>/usr/share/applications/org.wezfurlong.wezterm.desktop</code></li>
+<li>Configuration instructions can be <a href="config/index.html">found here</a></li>
+</ul>
+<h2><a class="header" href="#installing-on-fedora-and-rpm-based-systems" id="installing-on-fedora-and-rpm-based-systems">Installing on Fedora and rpm-based Systems</a></h2>
+<p>The CI system builds <code>.rpm</code> files on CentOS and Fedora systems.
+These are likely compatible with other rpm-based distributions.
+Alternatively, you can try the AppImage download with should work
+on most Linux systems.</p>
+<table><thead><tr><th>Distro</th><th>Stable</th><th>Nightly</th></tr></thead><tbody>
+<tr><td>CentOS7</td><td><a href="https://github.com/wez/wezterm/releases/download/20200517-122836-92c201c6/wezterm-20200517_122836_92c201c6-1.el7.x86_64.rpm">wezterm-20200517_122836_92c201c6-1.el7.x86_64.rpm</a></td><td><a href="https://github.com/wez/wezterm/releases/download/nightly/wezterm-nightly-centos7.rpm">wezterm-nightly-centos7.rpm</a></td></tr>
+<tr><td>CentOS8</td><td><a href="https://github.com/wez/wezterm/releases/download/20200517-122836-92c201c6/wezterm-20200517_122836_92c201c6-1.el8.x86_64.rpm">wezterm-20200517_122836_92c201c6-1.el8.x86_64.rpm</a></td><td><a href="https://github.com/wez/wezterm/releases/download/nightly/wezterm-nightly-centos8.rpm">wezterm-nightly-centos8.rpm</a></td></tr>
+<tr><td>Fedora31</td><td><a href="https://github.com/wez/wezterm/releases/download/20200517-122836-92c201c6/wezterm-20200517_122836_92c201c6-1.fc31.x86_64.rpm">wezterm-20200517_122836_92c201c6-1.fc31.x86_64.rpm</a></td><td><a href="https://github.com/wez/wezterm/releases/download/nightly/wezterm-nightly-fedora31.rpm">wezterm-nightly-fedora31.rpm</a></td></tr>
+<tr><td>Fedora32</td><td><a href="https://github.com/wez/wezterm/releases/download/20200517-122836-92c201c6/wezterm-20200517_122836_92c201c6-1.fc32.x86_64.rpm">wezterm-20200517_122836_92c201c6-1.fc32.x86_64.rpm</a></td><td><a href="https://github.com/wez/wezterm/releases/download/nightly/wezterm-nightly-fedora32.rpm">wezterm-nightly-fedora32.rpm</a></td></tr>
+</tbody></table>
+<p>To download and install form the CLI you can use something like this, which
+shows how to install the Fedora 31 package:</p>
+<pre><code class="language-bash">sudo dnf install -y https://github.com/wez/wezterm/releases/download/20200517-122836-92c201c6/wezterm-20200517_122836_92c201c6-1.fc31.x86_64.rpm
+</code></pre>
+<ul>
+<li>The package installs <code>/usr/bin/wezterm</code> and <code>/usr/share/applications/org.wezfurlong.wezterm.desktop</code></li>
+<li>Configuration instructions can be <a href="config/index.html">found here</a></li>
+</ul>
+<h2><a class="header" href="#raw-linux-binary" id="raw-linux-binary">Raw Linux Binary</a></h2>
+<p>Another option for linux is a raw binary archive.  These are the same binaries that
+are built for Ubuntu but provided in a tarball.</p>
+<p><a href="https://github.com/wez/wezterm/releases/download/20200517-122836-92c201c6/wezterm-20200517-122836-92c201c6.Ubuntu16.04.tar.xz" class="btn">Download raw Linux binaries</a>
+<a href="https://github.com/wez/wezterm/releases/download/nightly/wezterm-nightly.Ubuntu16.04.tar.xz" class="btn">Nightly raw Linux binaries</a></p>
+<h2><a class="header" href="#installing-from-source" id="installing-from-source">Installing from source</a></h2>
+<p>If your system isn't covered by the list above, then you can build it for yourself.
+WezTerm should run on any modern unix as well as Windows 10 and macOS.</p>
+<ul>
+<li>Install <code>rustup</code> to get the <code>rust</code> compiler installed on your system.
+<a href="https://www.rust-lang.org/en-US/install.html">Install rustup</a></li>
+<li>Rust version 1.41 or later is required</li>
+<li>Build in release mode: <code>cargo build --release</code></li>
+<li>Run it via either <code>cargo run --release</code> or <code>target/release/wezterm</code></li>
+</ul>
+<p>You will need a collection of support libraries; the <a href="https://github.com/wez/wezterm/blob/master/get-deps"><code>get-deps</code></a> script will
+attempt to install them for you.  If it doesn't know about your system,
+<a href="https://github.com/wez/wezterm/blob/master/CONTRIBUTING.md">please contribute instructions!</a></p>
+<p>If you don't plan to submit a pull request to the wezterm repo, you can
+download a smaller source tarball using these steps:</p>
+<pre><code class="language-bash">curl https://sh.rustup.rs -sSf | sh -s
+curl -LO https://github.com/wez/wezterm/releases/download/20200517-122836-92c201c6/wezterm-20200517-122836-92c201c6-src.tar.gz
+tar -xzf wezterm-20200517-122836-92c201c6-src.tar.gz
+cd wezterm-20200517-122836-92c201c6
+sudo ./get-deps
+cargo build --release
+cargo run --release -- start
+</code></pre>
+<p>Alternatively, use the full git repo:</p>
+<pre><code class="language-bash">curl https://sh.rustup.rs -sSf | sh -s
+git clone --depth=1 --branch=master --recursive https://github.com/wez/wezterm.git
+cd wezterm
+git submodule update --init --recursive
+sudo ./get-deps
+cargo build --release
+cargo run --release -- start
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="features.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="features.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+        
+        
+        <script type="text/javascript">
+            window.playpen_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

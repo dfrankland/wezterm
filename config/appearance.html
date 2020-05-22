@@ -1,0 +1,382 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js navy">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Colors &amp; Appearance - Wez's Terminal Emulator</title>
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+        <link rel="stylesheet" href="../custom.css">
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">wezterm</a></li><li class="chapter-item expanded "><a href="../installation.html"><strong aria-hidden="true">1.</strong> Install</a></li><li class="chapter-item expanded "><a href="../features.html"><strong aria-hidden="true">2.</strong> Features</a></li><li class="chapter-item expanded "><a href="../changelog.html"><strong aria-hidden="true">3.</strong> Change Log</a></li><li class="chapter-item expanded "><a href="../config/files.html"><strong aria-hidden="true">4.</strong> Configuration</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../config/launch.html"><strong aria-hidden="true">4.1.</strong> Launching Programs</a></li><li class="chapter-item expanded "><a href="../config/fonts.html"><strong aria-hidden="true">4.2.</strong> Fonts</a></li><li class="chapter-item expanded "><a href="../config/font-shaping.html"><strong aria-hidden="true">4.3.</strong> Font Shaping</a></li><li class="chapter-item expanded "><a href="../config/misc.html"><strong aria-hidden="true">4.4.</strong> Misc</a></li><li class="chapter-item expanded "><a href="../config/keys.html"><strong aria-hidden="true">4.5.</strong> Key &amp; Mouse Binding</a></li><li class="chapter-item expanded "><a href="../config/appearance.html" class="active"><strong aria-hidden="true">4.6.</strong> Colors &amp; Appearance</a></li><li class="chapter-item expanded "><a href="../config/lua.html"><strong aria-hidden="true">4.7.</strong> Lua Reference</a></li></ol></li><li class="chapter-item expanded "><a href="../hyperlinks.html"><strong aria-hidden="true">5.</strong> Hyperlinks</a></li><li class="chapter-item expanded "><a href="../shell-integration.html"><strong aria-hidden="true">6.</strong> Shell Integration</a></li><li class="chapter-item expanded "><a href="../imgcat.html"><strong aria-hidden="true">7.</strong> iTerm Image Protocol</a></li><li class="chapter-item expanded "><a href="../ssh.html"><strong aria-hidden="true">8.</strong> SSH</a></li><li class="chapter-item expanded "><a href="../serial.html"><strong aria-hidden="true">9.</strong> Serial Ports &amp; Arduino</a></li><li class="chapter-item expanded "><a href="../multiplexing.html"><strong aria-hidden="true">10.</strong> Multiplexing</a></li><li class="chapter-item expanded "><a href="../faq.html"><strong aria-hidden="true">11.</strong> F.A.Q.</a></li><li class="chapter-item expanded "><a href="../help.html"><strong aria-hidden="true">12.</strong> Getting Help</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Wez's Terminal Emulator</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h3><a class="header" href="#color-scheme" id="color-scheme">Color Scheme</a></h3>
+<p>Wezterm ships with the full set of over 200 color schemes available from
+<a href="https://iterm2colorschemes.com/">iterm2colorschemes.com</a>.  You can select a
+color scheme with a line like this:</p>
+<pre><code class="language-lua">return {
+  color_scheme = &quot;Batman&quot;,
+}
+</code></pre>
+<p>There are literally too many schemes to reasonably list here; check out the
+screenshots on <a href="https://iterm2colorschemes.com/">iterm2colorschemes.com</a>!</p>
+<p>The <code>color_scheme</code> option takes precedence over the <code>colors</code> section below.</p>
+<h3><a class="header" href="#defining-your-own-colors" id="defining-your-own-colors">Defining your own colors</a></h3>
+<p>Rather than using a color scheme, you can specify the color palette using the
+<code>colors</code> configuration section.  Note that <code>color_scheme</code> takes precedence
+over this section.</p>
+<p>You can configure colors with a section like this.  In addition to specifying
+<a href="https://docs.rs/palette/0.4.1/palette/named/index.html#constants">SVG/CSS3 color names</a>,
+you can use <code>#RRGGBB</code> to specify a color code using the
+usual hex notation; eg: <code>#000000</code> is equivalent to <code>black</code>:</p>
+<pre><code class="language-lua">return {
+  colors = {
+      -- The default text color
+      foreground = &quot;silver&quot;,
+      -- The default background color
+      background = &quot;black&quot;,
+
+      -- Overrides the cell background color when the current cell is occupied by the
+      -- cursor and the cursor style is set to Block
+      cursor_bg = &quot;#52ad70&quot;,
+      -- Overrides the text color when the current cell is occupied by the cursor
+      cursor_fg = &quot;black&quot;,
+      -- Specifies the border color of the cursor when the cursor style is set to Block,
+      -- of the color of the vertical or horizontal bar when the cursor style is set to
+      -- Bar or Underline.
+      cursor_border = &quot;#52ad70&quot;,
+
+      -- The color of the scrollbar &quot;thumb&quot;; the portion that represents the current viewport
+      scrollbar_thumb = &quot;#222222&quot;,
+
+      ansi = {&quot;black&quot;, &quot;maroon&quot;, &quot;green&quot;, &quot;olive&quot;, &quot;navy&quot;, &quot;purple&quot;, &quot;teal&quot;, &quot;silver&quot;},
+      brights = {&quot;grey&quot;, &quot;red&quot;, &quot;lime&quot;, &quot;yellow&quot;, &quot;blue&quot;, &quot;fuchsia&quot;, &quot;aqua&quot;, &quot;white&quot;},
+  }
+}
+</code></pre>
+<h3><a class="header" href="#defining-a-color-scheme-in-your-weztermlua" id="defining-a-color-scheme-in-your-weztermlua">Defining a Color Scheme in your <code>.wezterm.lua</code></a></h3>
+<p>If you'd like to keep a couple of color schemes handy in your configuration
+file, rather than filling out the <code>colors</code> section, place it in a
+<code>color_schemes</code> section as shown below; you can then reference it using the
+<code>color_scheme</code> setting.</p>
+<p>Color schemes names that you define in your <code>wezterm.lua</code> take precedence
+over all other color schemes.</p>
+<p>All of the settings available from the <code>colors</code> section are available
+to use in the <code>color_schemes</code> sections.</p>
+<pre><code class="language-lua">return {
+  color_scheme = &quot;Red Scheme&quot;,
+
+  color_schemes = {
+    [&quot;Red Scheme&quot;] = {
+      background = &quot;red&quot;,
+    }
+    [&quot;Blue Scheme&quot;] = {
+      background = &quot;blue&quot;,
+    }
+  },
+}
+</code></pre>
+<h3><a class="header" href="#defining-a-color-scheme-in-a-separate-file" id="defining-a-color-scheme-in-a-separate-file">Defining a Color Scheme in a separate file</a></h3>
+<p>If you'd like to factor your color schemes out into separate files, you
+can create a file with a <code>[colors]</code> section; take a look at <a href="https://github.com/wez/wezterm/blob/master/assets/colors/Builtin%20Dark.toml">one of
+the available color schemes for an example</a>.</p>
+<p>You then need to instruct wezterm where to look for your scheme files;
+the <code>color_scheme_dirs</code> setting specifies a list of directories to
+be searched:</p>
+<pre><code class="language-lua">return {
+  color_scheme_dirs = {&quot;/some/path/to/my/color/schemes&quot;},
+}
+</code></pre>
+<p>Color scheme names that are defined in files in your <code>color_scheme_dirs</code> list
+take precedence over the built-in color schemes.</p>
+<h3><a class="header" href="#dynamic-color-escape-sequences" id="dynamic-color-escape-sequences">Dynamic Color Escape Sequences</a></h3>
+<p>Wezterm supports dynamically changing its color palette via escape sequences.</p>
+<p><a href="https://github.com/mbadolato/iTerm2-Color-Schemes/tree/master/dynamic-colors">The dynamic-colors directory</a>
+of the color scheme repo contains shell scripts that can change the color
+scheme immediately on the fly.  This can be used in your own scripts to alter
+the terminal appearance programmatically:</p>
+<pre><code class="language-bash">$ git clone https://github.com/mbadolato/iTerm2-Color-Schemes.git
+$ cd iTerm2-Color-Schemes/dynamic-colors
+$ for scheme in *.sh ; do ; echo $scheme ; \
+   bash &quot;$scheme&quot; ; ../tools/screenshotTable.sh; sleep 0.5; done
+</code></pre>
+<p><video width="80%" controls src="../screenshots/wezterm-dynamic-colors.mp4" loop></video></p>
+<h3><a class="header" href="#tab-bar-colors" id="tab-bar-colors">Tab Bar Colors</a></h3>
+<p>The following options control the appearance of the tab bar:</p>
+<pre><code class="language-lua">return {
+  colors = {
+    tab_bar = {
+
+      -- The color of the strip that goes along the top of the window
+      background = &quot;#0b0022&quot;,
+
+      -- The active tab is the one that has focus in the window
+      active_tab = {
+        -- The color of the background area for the tab
+        bg_color = &quot;#2b2042&quot;,
+        -- The color of the text for the tab
+        fg_color = &quot;#c0c0c0&quot;,
+
+        -- Specify whether you want &quot;Half&quot;, &quot;Normal&quot; or &quot;Bold&quot; intensity for the
+        -- label shown for this tab.
+        -- The default is &quot;Normal&quot;
+        intensity = &quot;Normal&quot;,
+
+        -- Specify whether you want &quot;None&quot;, &quot;Single&quot; or &quot;Double&quot; underline for
+        -- label shown for this tab.
+        -- The default is &quot;None&quot;
+        underline = &quot;None&quot;,
+
+        -- Specify whether you want the text to be italic (true) or not (false)
+        -- for this tab.  The default is false.
+        italic = false,
+
+        -- Specify whether you want the text to be rendered with strikethrough (true)
+        -- or not for this tab.  The default is false.
+        strikethrough = false,
+      },
+
+      -- Inactive tabs are the tabs that do not have focus
+      inactive_tab = {
+        bg_color = &quot;#1b1032&quot;,
+        fg_color = &quot;#808080&quot;,
+
+        -- The same options that were listed under the `active_tab` section above
+        -- can also be used for `inactive_tab`.
+      },
+
+      -- You can configure some alternate styling when the mouse pointer
+      -- moves over inactive tabs
+      inactive_tab_hover = {
+        bg_color = &quot;#3b3052&quot;,
+        fg_color = &quot;#909090&quot;,
+        italic = true,
+
+        -- The same options that were listed under the `active_tab` section above
+        -- can also be used for `inactive_tab_hover`.
+      }
+    }
+  }
+}
+</code></pre>
+<h3><a class="header" href="#window-padding" id="window-padding">Window Padding</a></h3>
+<p>You may add padding around the edges of the terminal cells:</p>
+<pre><code class="language-lua">return {
+  window_padding = {
+    left = 2,
+    -- This will become the scrollbar width if you have enabled the scrollbar!
+    right = 2,
+
+    top = 0,
+    bottom = 0,
+  }
+}
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="../config/keys.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="../config/lua.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="../config/keys.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="../config/lua.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+        
+        
+        <script type="text/javascript">
+            window.playpen_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

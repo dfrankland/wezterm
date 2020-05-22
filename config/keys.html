@@ -1,0 +1,691 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js navy">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Key &amp; Mouse Binding - Wez's Terminal Emulator</title>
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+        <link rel="stylesheet" href="../custom.css">
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">wezterm</a></li><li class="chapter-item expanded "><a href="../installation.html"><strong aria-hidden="true">1.</strong> Install</a></li><li class="chapter-item expanded "><a href="../features.html"><strong aria-hidden="true">2.</strong> Features</a></li><li class="chapter-item expanded "><a href="../changelog.html"><strong aria-hidden="true">3.</strong> Change Log</a></li><li class="chapter-item expanded "><a href="../config/files.html"><strong aria-hidden="true">4.</strong> Configuration</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../config/launch.html"><strong aria-hidden="true">4.1.</strong> Launching Programs</a></li><li class="chapter-item expanded "><a href="../config/fonts.html"><strong aria-hidden="true">4.2.</strong> Fonts</a></li><li class="chapter-item expanded "><a href="../config/font-shaping.html"><strong aria-hidden="true">4.3.</strong> Font Shaping</a></li><li class="chapter-item expanded "><a href="../config/misc.html"><strong aria-hidden="true">4.4.</strong> Misc</a></li><li class="chapter-item expanded "><a href="../config/keys.html" class="active"><strong aria-hidden="true">4.5.</strong> Key &amp; Mouse Binding</a></li><li class="chapter-item expanded "><a href="../config/appearance.html"><strong aria-hidden="true">4.6.</strong> Colors &amp; Appearance</a></li><li class="chapter-item expanded "><a href="../config/lua.html"><strong aria-hidden="true">4.7.</strong> Lua Reference</a></li></ol></li><li class="chapter-item expanded "><a href="../hyperlinks.html"><strong aria-hidden="true">5.</strong> Hyperlinks</a></li><li class="chapter-item expanded "><a href="../shell-integration.html"><strong aria-hidden="true">6.</strong> Shell Integration</a></li><li class="chapter-item expanded "><a href="../imgcat.html"><strong aria-hidden="true">7.</strong> iTerm Image Protocol</a></li><li class="chapter-item expanded "><a href="../ssh.html"><strong aria-hidden="true">8.</strong> SSH</a></li><li class="chapter-item expanded "><a href="../serial.html"><strong aria-hidden="true">9.</strong> Serial Ports &amp; Arduino</a></li><li class="chapter-item expanded "><a href="../multiplexing.html"><strong aria-hidden="true">10.</strong> Multiplexing</a></li><li class="chapter-item expanded "><a href="../faq.html"><strong aria-hidden="true">11.</strong> F.A.Q.</a></li><li class="chapter-item expanded "><a href="../help.html"><strong aria-hidden="true">12.</strong> Getting Help</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Wez's Terminal Emulator</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <p>Both the keyboard and (starting with the most recently <em>nightly</em> builds) the
+mouse bindings are configurable.</p>
+<p>The assignments are based around a triggering event, such as a keypress or
+mouse button click, which is combined with a set of modifier keys to produce
+an action.</p>
+<p>A full list of possible keys, mouse events and actions are included below,
+after these tables describing the default assignments.</p>
+<h3><a class="header" href="#default-shortcut--key-binding-assignments" id="default-shortcut--key-binding-assignments">Default Shortcut / Key Binding Assignments</a></h3>
+<p>The default key bindings are:</p>
+<table><thead><tr><th>Modifiers</th><th>Key</th><th>Action</th></tr></thead><tbody>
+<tr><td><code>SUPER</code></td><td><code>c</code></td><td><code>Copy</code></td></tr>
+<tr><td><code>SUPER</code></td><td><code>v</code></td><td><code>Paste</code></td></tr>
+<tr><td><code>CTRL+SHIFT</code></td><td><code>c</code></td><td><code>Copy</code></td></tr>
+<tr><td><code>CTRL+SHIFT</code></td><td><code>v</code></td><td><code>Paste</code></td></tr>
+<tr><td><code>SHIFT</code></td><td><code>Insert</code></td><td><code>Paste</code></td></tr>
+<tr><td><code>SUPER</code></td><td><code>m</code></td><td><code>Hide</code></td></tr>
+<tr><td><code>SUPER</code></td><td><code>n</code></td><td><code>SpawnWindow</code></td></tr>
+<tr><td><code>CTRL+SHIFT</code></td><td><code>n</code></td><td><code>SpawnWindow</code></td></tr>
+<tr><td><code>ALT</code></td><td><code>Enter</code></td><td><code>ToggleFullScreen</code></td></tr>
+<tr><td><code>SUPER</code></td><td><code>-</code></td><td><code>DecreaseFontSize</code></td></tr>
+<tr><td><code>CTRL</code></td><td><code>-</code></td><td><code>DecreaseFontSize</code></td></tr>
+<tr><td><code>SUPER</code></td><td><code>=</code></td><td><code>IncreaseFontSize</code></td></tr>
+<tr><td><code>CTRL</code></td><td><code>=</code></td><td><code>IncreaseFontSize</code></td></tr>
+<tr><td><code>SUPER</code></td><td><code>0</code></td><td><code>ResetFontSize</code></td></tr>
+<tr><td><code>CTRL</code></td><td><code>0</code></td><td><code>ResetFontSize</code></td></tr>
+<tr><td><code>SUPER</code></td><td><code>t</code></td><td><code>SpawnTab=&quot;CurrentTabDomain&quot;</code></td></tr>
+<tr><td><code>CTRL+SHIFT</code></td><td><code>t</code></td><td><code>SpawnTab=&quot;CurrentTabDomain&quot;</code></td></tr>
+<tr><td><code>SUPER+SHIFT</code></td><td><code>T</code></td><td><code>SpawnTab=&quot;DefaultDomain&quot;</code></td></tr>
+<tr><td><code>SUPER</code></td><td><code>w</code></td><td><code>CloseCurrentTab</code></td></tr>
+<tr><td><code>SUPER</code></td><td><code>1</code></td><td><code>ActivateTab=0</code></td></tr>
+<tr><td><code>SUPER</code></td><td><code>2</code></td><td><code>ActivateTab=1</code></td></tr>
+<tr><td><code>SUPER</code></td><td><code>3</code></td><td><code>ActivateTab=2</code></td></tr>
+<tr><td><code>SUPER</code></td><td><code>4</code></td><td><code>ActivateTab=3</code></td></tr>
+<tr><td><code>SUPER</code></td><td><code>5</code></td><td><code>ActivateTab=4</code></td></tr>
+<tr><td><code>SUPER</code></td><td><code>6</code></td><td><code>ActivateTab=5</code></td></tr>
+<tr><td><code>SUPER</code></td><td><code>7</code></td><td><code>ActivateTab=6</code></td></tr>
+<tr><td><code>SUPER</code></td><td><code>8</code></td><td><code>ActivateTab=7</code></td></tr>
+<tr><td><code>SUPER</code></td><td><code>9</code></td><td><code>ActivateTab=8</code></td></tr>
+<tr><td><code>CTRL+SHIFT</code></td><td><code>w</code></td><td><code>CloseCurrentTab</code></td></tr>
+<tr><td><code>CTRL+SHIFT</code></td><td><code>1</code></td><td><code>ActivateTab=0</code></td></tr>
+<tr><td><code>CTRL+SHIFT</code></td><td><code>2</code></td><td><code>ActivateTab=1</code></td></tr>
+<tr><td><code>CTRL+SHIFT</code></td><td><code>3</code></td><td><code>ActivateTab=2</code></td></tr>
+<tr><td><code>CTRL+SHIFT</code></td><td><code>4</code></td><td><code>ActivateTab=3</code></td></tr>
+<tr><td><code>CTRL+SHIFT</code></td><td><code>5</code></td><td><code>ActivateTab=4</code></td></tr>
+<tr><td><code>CTRL+SHIFT</code></td><td><code>6</code></td><td><code>ActivateTab=5</code></td></tr>
+<tr><td><code>CTRL+SHIFT</code></td><td><code>7</code></td><td><code>ActivateTab=6</code></td></tr>
+<tr><td><code>CTRL+SHIFT</code></td><td><code>8</code></td><td><code>ActivateTab=7</code></td></tr>
+<tr><td><code>CTRL+SHIFT</code></td><td><code>9</code></td><td><code>ActivateTab=8</code></td></tr>
+<tr><td><code>SUPER+SHIFT</code></td><td><code>[</code></td><td><code>ActivateTabRelative=-1</code></td></tr>
+<tr><td><code>SUPER+SHIFT</code></td><td><code>]</code></td><td><code>ActivateTabRelative=1</code></td></tr>
+<tr><td><code>CTRL+SHIFT</code></td><td><code>PAGEUP</code></td><td><code>MoveTabRelative=-1</code></td></tr>
+<tr><td><code>CTRL+SHIFT</code></td><td><code>PAGEDOWN</code></td><td><code>MoveTabRelative=1</code></td></tr>
+<tr><td><code>SHIFT</code></td><td><code>PAGEUP</code></td><td><code>ScrollByPage=-1</code></td></tr>
+<tr><td><code>SHIFT</code></td><td><code>PAGEDOWN</code></td><td><code>ScrollByPage=1</code></td></tr>
+<tr><td><code>ALT</code></td><td><code>9</code></td><td><code>ShowTabNavigator</code></td></tr>
+<tr><td><code>SUPER</code></td><td><code>r</code></td><td><code>ReloadConfiguration</code></td></tr>
+<tr><td><code>CTRL+SHIFT</code></td><td><code>R</code></td><td><code>ReloadConfiguration</code></td></tr>
+<tr><td><code>SUPER</code></td><td><code>h</code></td><td><code>HideApplication</code> (macOS only)</td></tr>
+</tbody></table>
+<h2><a class="header" href="#default-mouse-assignments" id="default-mouse-assignments">Default Mouse Assignments</a></h2>
+<p>In the table below, <code>Triple Left Down</code> means that the left mouse button is
+being triple clicked and that the event matches the downstroke of the third
+quick consecutive press.  <code>Triple Left Up</code> matches the subsequent release event
+of that triple click, so for a triple click both
+<code>SelectTextAtMouseCursor=&quot;Line&quot;</code> and <code>CompleteSelection</code> will be triggered in
+that order.</p>
+<table><thead><tr><th>Event</th><th>Modifiers</th><th>Action</th></tr></thead><tbody>
+<tr><td>Triple Left Down</td><td><code>NONE</code></td><td><code>SelectTextAtMouseCursor=&quot;Line&quot;</code></td></tr>
+<tr><td>Double Left Down</td><td><code>NONE</code></td><td><code>SelectTextAtMouseCursor=&quot;Word&quot;</code></td></tr>
+<tr><td>Single Left Down</td><td><code>NONE</code></td><td><code>SelectTextAtMouseCursor=&quot;Cell&quot;</code></td></tr>
+<tr><td>Single Left Down</td><td><code>SHIFT</code></td><td><code>ExtendSelectionToMouseCursor=nil</code></td></tr>
+<tr><td>Single Left Up</td><td><code>NONE</code></td><td><code>CompleteSelectionOrOpenLinkAtMouseCursor</code></td></tr>
+<tr><td>Double Left Up</td><td><code>NONE</code></td><td><code>CompleteSelection</code></td></tr>
+<tr><td>Triple Left Up</td><td><code>NONE</code></td><td><code>CompleteSelection</code></td></tr>
+<tr><td>Single Left Drag</td><td><code>NONE</code></td><td><code>ExtendSelectionToMouseCursor=&quot;Cell&quot;</code></td></tr>
+<tr><td>Double Left Drag</td><td><code>NONE</code></td><td><code>ExtendSelectionToMouseCursor=&quot;Word&quot;</code></td></tr>
+<tr><td>Triple Left Drag</td><td><code>NONE</code></td><td><code>ExtendSelectionToMouseCursor=&quot;Line&quot;</code></td></tr>
+<tr><td>Single Middle Down</td><td><code>NONE</code></td><td><code>Paste</code></td></tr>
+</tbody></table>
+<h2><a class="header" href="#configuring-mouse-assignments" id="configuring-mouse-assignments">Configuring Mouse Assignments</a></h2>
+<p><em>available in the most recent nightly</em></p>
+<p>You can define mouse actions using the <code>mouse_bindings</code> configuration section:</p>
+<pre><code class="language-lua">local wezterm = require 'wezterm';
+
+return {
+  mouse_bindings = {
+    -- Right click sends &quot;woot&quot; to the terminal
+    {
+      event={Down={streak=1, button=&quot;Right&quot;}},
+      mods=&quot;NONE&quot;,
+      action=wezterm.action{SendString=&quot;woot&quot;}
+    },
+
+    -- Change the default click behavior so that it only selects
+    -- text and doesn't open hyperlinks
+    {
+      event={Up={streak=1, button=&quot;Left&quot;}},
+      mods=&quot;NONE&quot;,
+      action=&quot;CompleteSelection&quot;,
+    },
+
+    -- and make CTRL-Click open hyperlinks
+    {
+      event={Up={streak=1, button=&quot;Left&quot;}},
+      mods=&quot;CTRL&quot;,
+      action=&quot;OpenLinkAtMouseCursor&quot;,
+    },
+  },
+}
+</code></pre>
+<p>The <code>action</code> and <code>mods</code> portions are described in more detail in the key assignment
+information below.</p>
+<p>The <code>event</code> portion has three components;</p>
+<ul>
+<li>Whether it is a <code>Down</code>, <code>Up</code> or <code>Drag</code> event</li>
+<li>The number of consecutive clicks within the click threshold (the <em>click streak</em>)</li>
+<li>The mouse button; <code>Left</code>, <code>Right</code>, or <code>Middle</code>.</li>
+</ul>
+<p>A double click is a <code>down-up-down</code> sequence where either the second button down
+is held for long enough or is released and no subsequent down event occurs
+within the click threshold.  When recognized, it emits a <code>Down</code> event with
+<code>streak=2</code>.  If the mouse is moved while the button is held, a <code>Drag</code> event
+with <code>streak=2</code> is generated.  When the mouse button is released an <code>Up</code> event
+with <code>streak=2</code> is generated.</p>
+<p>The mouse event recognizer supports an arbitrary click streak, so if
+you wanted quadruple-click bindings you can specify <code>streak=4</code>.</p>
+<table><thead><tr><th>Event</th><th>Lua Representation</th></tr></thead><tbody>
+<tr><td>Triple Left Down</td><td><code>event={Down={streak=3, button=&quot;Left&quot;}}</code></td></tr>
+<tr><td>Double Left Up</td><td><code>event={Up={streak=2, button=&quot;Left&quot;}}</code></td></tr>
+<tr><td>Single Left Drag</td><td><code>event={Drag={streak=1, button=&quot;Left&quot;}}</code></td></tr>
+</tbody></table>
+<h2><a class="header" href="#configuring-key-assignments" id="configuring-key-assignments">Configuring Key Assignments</a></h2>
+<p>These can be overridden using the <code>keys</code> section in your <code>~/.wezterm.lua</code> config file.
+For example, you can disable a default assignment like this:</p>
+<pre><code class="language-lua">local wezterm = require 'wezterm';
+
+return {
+  keys = {
+    -- Turn off the default CMD-m Hide action on macOS by making it
+    -- send the empty string instead of hiding the window
+    {key=&quot;m&quot;, mods=&quot;CMD&quot;, action=&quot;Nop&quot;}
+  }
+}
+</code></pre>
+<p>The <code>key</code> value can be one of the following keycode identifiers.  Note that not
+all of these are meaningful on all platforms:</p>
+<p><code>Hyper</code>, <code>Super</code>, <code>Meta</code>, <code>Cancel</code>, <code>Backspace</code>, <code>Tab</code>, <code>Clear</code>, <code>Enter</code>,
+<code>Shift</code>, <code>Escape</code>, <code>LeftShift</code>, <code>RightShift</code>, <code>Control</code>, <code>LeftControl</code>,
+<code>RightControl</code>, <code>Alt</code>, <code>LeftAlt</code>, <code>RightAlt</code>, <code>Menu</code>, <code>LeftMenu</code>, <code>RightMenu</code>,
+<code>Pause</code>, <code>CapsLock</code>, <code>PageUp</code>, <code>PageDown</code>, <code>End</code>, <code>Home</code>, <code>LeftArrow</code>,
+<code>RightArrow</code>, <code>UpArrow</code>, <code>DownArrow</code>, <code>Select</code>, <code>Print</code>, <code>Execute</code>,
+<code>PrintScreen</code>, <code>Insert</code>, <code>Delete</code>, <code>Help</code>, <code>LeftWindows</code>, <code>RightWindows</code>,
+<code>Applications</code>, <code>Sleep</code>, <code>Numpad0</code>, <code>Numpad1</code>, <code>Numpad2</code>, <code>Numpad3</code>,
+<code>Numpad4</code>, <code>Numpad5</code>, <code>Numpad6</code>, <code>Numpad7</code>, <code>Numpad8</code>, <code>Numpad9</code>, <code>Multiply</code>,
+<code>Add</code>, <code>Separator</code>, <code>Subtract</code>, <code>Decimal</code>, <code>Divide</code>, <code>NumLock</code>, <code>ScrollLock</code>,
+<code>BrowserBack</code>, <code>BrowserForward</code>, <code>BrowserRefresh</code>, <code>BrowserStop</code>,
+<code>BrowserSearch</code>, <code>BrowserFavorites</code>, <code>BrowserHome</code>, <code>VolumeMute</code>,
+<code>VolumeDown</code>, <code>VolumeUp</code>, <code>MediaNextTrack</code>, <code>MediaPrevTrack</code>, <code>MediaStop</code>,
+<code>MediaPlayPause</code>, <code>ApplicationLeftArrow</code>, <code>ApplicationRightArrow</code>,
+<code>ApplicationUpArrow</code>, <code>ApplicationDownArrow</code>.</p>
+<p>Alternatively, a single unicode character can be specified to indicate
+pressing the corresponding key.</p>
+<p>Possible Modifier labels are:</p>
+<ul>
+<li><code>SUPER</code>, <code>CMD</code>, <code>WIN</code> - these are all equivalent: on macOS the <code>Command</code> key,
+on Windows the <code>Windows</code> key, on Linux this can also be the <code>Super</code> or <code>Hyper</code>
+key.  Left and right are equivalent.</li>
+<li><code>SHIFT</code> - The shift key.  Left and right are equivalent.</li>
+<li><code>ALT</code>, <code>OPT</code>, <code>META</code> - these are all equivalent: on macOS the <code>Option</code> key,
+on other systems the <code>Alt</code> or <code>Meta</code> key.  Left and right are equivalent.</li>
+</ul>
+<p>You can combine modifiers using the <code>|</code> symbol (eg: <code>&quot;CMD|CTRL&quot;</code>).</p>
+<h1><a class="header" href="#possible-actions" id="possible-actions">Possible Actions</a></h1>
+<p>Possible actions are listed below.</p>
+<h2><a class="header" href="#spawntab" id="spawntab">SpawnTab</a></h2>
+<p>Create a new tab in the current window.  The argument defines to which <em>domain</em> the tab belongs:</p>
+<pre><code class="language-lua">local wezterm = require 'wezterm';
+return {
+  keys = {
+    -- Create a new tab in the default domain
+    {key=&quot;t&quot;, mods=&quot;SHIFT|ALT&quot;, action=wezterm.action{SpawnTab=&quot;DefaultDomain&quot;}},
+    -- Create a new tab in the same domain as the current tab
+    {key=&quot;t&quot;, mods=&quot;SHIFT|ALT&quot;, action=wezterm.action{SpawnTab=&quot;CurrentTabDomain&quot;}},
+    -- Create a tab in a named domain
+    {key=&quot;t&quot;, mods=&quot;SHIFT|ALT&quot;, action=wezterm.action{SpawnTab={DomainName=&quot;unix&quot;}}},
+  }
+}
+</code></pre>
+<h2><a class="header" href="#spawnwindow" id="spawnwindow">SpawnWindow</a></h2>
+<p>Create a new window containing a tab from the default tab domain.</p>
+<pre><code class="language-lua">local wezterm = require 'wezterm';
+return {
+  keys = {
+    {key=&quot;n&quot;, mods=&quot;SHIFT|CTRL&quot;, action=&quot;SpawnWindow&quot;},
+  }
+}
+</code></pre>
+<h2><a class="header" href="#spawncommandinnewwindow--spawncommandinnewtab" id="spawncommandinnewwindow--spawncommandinnewtab">SpawnCommandInNewWindow / SpawnCommandInNewTab</a></h2>
+<p>Spawn a new tab either into the current window or into a brand new window.
+The argument controls which command is run in the tab; it is a lua table
+with the following fields:</p>
+<ul>
+<li><code>args</code> - the argument array specifying the command and its arguments.
+If omitted, the default program will be run.</li>
+<li><code>cwd</code> - the current working directory to set for the command.</li>
+<li><code>set_environment_variables</code> - a table specifying key/value pairs to
+set in the environment</li>
+<li><code>domain</code> - specifies the domain into which the tab will be spawned.
+See <code>SpawnTab</code> for examples.</li>
+</ul>
+<pre><code class="language-lua">local wezterm = require 'wezterm';
+
+return {
+  keys = {
+    -- CMD-y starts `top` in a new window
+    {key=&quot;y&quot;, mods=&quot;CMD&quot;, action=wezterm.action{SpawnCommandInNewWindow={
+      args={&quot;top&quot;}
+    }}},
+  }
+}
+</code></pre>
+<h2><a class="header" href="#togglefullscreen" id="togglefullscreen">ToggleFullScreen</a></h2>
+<p>Toggles full screen mode for the current window.  (But see:
+<a href="https://github.com/wez/wezterm/issues/177">https://github.com/wez/wezterm/issues/177</a>)</p>
+<pre><code class="language-lua">return {
+  keys = {
+    {key=&quot;n&quot;, mods=&quot;SHIFT|CTRL&quot;, action=&quot;ToggleFullScreen&quot;},
+  }
+}
+</code></pre>
+<h2><a class="header" href="#copy" id="copy">Copy</a></h2>
+<p>Copy the selection to the clipboard.  On X11 systems, this populates both the
+Clipboard and the Primary Selection.</p>
+<pre><code class="language-lua">local wezterm = require 'wezterm';
+return {
+  keys = {
+    {key=&quot;c&quot;, mods=&quot;SHIFT|CTRL&quot;, action=&quot;Copy&quot;},
+  }
+}
+</code></pre>
+<h2><a class="header" href="#paste" id="paste">Paste</a></h2>
+<p>Paste the clipboard to the current tab.  On X11 systems, this copies from the
+Clipboard rather than the Primary Selection.  See also <code>PastePrimarySelection</code>.</p>
+<pre><code class="language-lua">local wezterm = require 'wezterm';
+return {
+  keys = {
+    {key=&quot;v&quot;, mods=&quot;SHIFT|CTRL&quot;, action=&quot;Paste&quot;},
+  }
+}
+</code></pre>
+<h2><a class="header" href="#pasteprimaryselection" id="pasteprimaryselection">PastePrimarySelection</a></h2>
+<p>X11: Paste the Primary Selection to the current tab.
+On other systems, this behaves identically to <code>Paste</code>.</p>
+<pre><code class="language-lua">local wezterm = require 'wezterm';
+return {
+  keys = {
+    {key=&quot;v&quot;, mods=&quot;SHIFT|CTRL&quot;, action=&quot;PastePrimarySelection&quot;},
+  }
+}
+</code></pre>
+<h2><a class="header" href="#activatetabrelative" id="activatetabrelative">ActivateTabRelative</a></h2>
+<p>Activate a tab relative to the current tab.  The argument value specifies an
+offset. eg: <code>-1</code> activates the tab to the left of the current tab, while <code>1</code>
+activates the tab to the right.</p>
+<pre><code class="language-lua">local wezterm = require 'wezterm';
+return {
+  keys = {
+    {key=&quot;{&quot;, mods=&quot;SHIFT|ALT&quot;, action=wezterm.action{ActivateTabRelative=-1}},
+    {key=&quot;}&quot;, mods=&quot;SHIFT|ALT&quot;, action=wezterm.action{ActivateTabRelative=1}},
+  }
+}
+</code></pre>
+<h2><a class="header" href="#activatetab" id="activatetab">ActivateTab</a></h2>
+<p>Activate the tab specified by the argument value. eg: <code>0</code> activates the
+leftmost tab, while <code>1</code> activates the second tab from the left, and so on.</p>
+<pre><code class="language-lua">local wezterm = require 'wezterm';
+
+local mykeys = {}
+for i = 1, 8 do
+  -- CTRL+ALT + number to activate that tab
+  table.insert(mykeys, {
+    key=tostring(i),
+    mods=&quot;CTRL|ALT&quot;,
+    action=wezterm.action{ActivateTab=i-1},
+  })
+  -- F1 through F8 to activate that tab
+  table.insert(mykeys, {
+    key=&quot;F&quot; .. tostring(i),
+    action=wezterm.action{ActivateTab=i-1},
+  })
+end
+
+return {
+  keys = mykeys,
+}
+</code></pre>
+<h2><a class="header" href="#increasefontsize" id="increasefontsize">IncreaseFontSize</a></h2>
+<p>Increases the font size of the current window by 10%</p>
+<pre><code class="language-lua">local wezterm = require 'wezterm';
+return {
+  keys = {
+    {key=&quot;=&quot;, mods=&quot;CTRL&quot;, action=&quot;IncreaseFontSize&quot;},
+  }
+}
+</code></pre>
+<h2><a class="header" href="#decreasefontsize" id="decreasefontsize">DecreaseFontSize</a></h2>
+<p>Decreases the font size of the current window by 10%</p>
+<pre><code class="language-lua">local wezterm = require 'wezterm';
+return {
+  keys = {
+    {key=&quot;-&quot;, mods=&quot;CTRL&quot;, action=&quot;DecreaseFontSize&quot;},
+  }
+}
+</code></pre>
+<h2><a class="header" href="#resetfontsize" id="resetfontsize">ResetFontSize</a></h2>
+<p>Reset the font size for the current window to the value in your configuration</p>
+<pre><code class="language-lua">local wezterm = require 'wezterm';
+return {
+  keys = {
+    {key=&quot;0&quot;, mods=&quot;CTRL&quot;, action=&quot;ResetFontSize&quot;},
+  }
+}
+</code></pre>
+<h2><a class="header" href="#sendstring" id="sendstring">SendString</a></h2>
+<p>Sends the string specified argument to the terminal in the current tab, as
+though that text were literally typed into the terminal.</p>
+<pre><code class="language-lua">local wezterm = require 'wezterm';
+
+return {
+  keys = {
+    {key=&quot;m&quot;, mods=&quot;CMD&quot;, action=wezterm.action{SendString=&quot;Hello&quot;}},
+  }
+}
+</code></pre>
+<h2><a class="header" href="#nop" id="nop">Nop</a></h2>
+<p>Does nothing.  This is useful to disable a default key assignment.</p>
+<pre><code class="language-lua">local wezterm = require 'wezterm';
+
+return {
+  keys = {
+    -- Turn off the default CMD-m Hide action
+    {key=&quot;m&quot;, mods=&quot;CMD&quot;, action=&quot;Nop&quot;},
+  }
+}
+</code></pre>
+<h2><a class="header" href="#hide" id="hide">Hide</a></h2>
+<p>Hides the current window</p>
+<pre><code class="language-lua">return {
+  keys = {
+    {key=&quot;h&quot;, mods=&quot;CMD&quot;, action=&quot;Hide&quot;},
+  }
+}
+</code></pre>
+<h2><a class="header" href="#hideapplication" id="hideapplication">HideApplication</a></h2>
+<p>On macOS, hide the WezTerm application.</p>
+<pre><code class="language-lua">return {
+  keys = {
+    {key=&quot;h&quot;, mods=&quot;CMD&quot;, action=&quot;HideApplication&quot;},
+  }
+}
+</code></pre>
+<h2><a class="header" href="#quitapplication" id="quitapplication">QuitApplication</a></h2>
+<p>Terminate the WezTerm application, killing all tabs.</p>
+<pre><code class="language-lua">return {
+  keys = {
+    {key=&quot;q&quot;, mods=&quot;CMD&quot;, action=&quot;QuitApplication&quot;},
+  }
+}
+</code></pre>
+<h2><a class="header" href="#show" id="show">Show</a></h2>
+<p>Shows the current window.</p>
+<h2><a class="header" href="#closecurrenttab" id="closecurrenttab">CloseCurrentTab</a></h2>
+<p>Equivalent to clicking the <code>x</code> on the window title bar to close it: Closes the
+current tab.  If that was the last tab, closes that window.  If that was the
+last window, wezterm terminates.</p>
+<pre><code class="language-lua">return {
+  keys = {
+    {key=&quot;w&quot;, mods=&quot;CMD&quot;, action=&quot;CloseCurrentTab&quot;},
+  }
+}
+</code></pre>
+<h2><a class="header" href="#movetabrelative" id="movetabrelative">MoveTabRelative</a></h2>
+<p>Move the current tab relative to its peers.  The argument specifies an
+offset. eg: <code>-1</code> moves the tab to the left of the current tab, while <code>1</code> moves
+the tab to the right.</p>
+<pre><code class="language-lua">local wezterm = require 'wezterm';
+return {
+  keys = {
+    {key=&quot;{&quot;, mods=&quot;SHIFT|ALT&quot;, action=wezterm.action{MoveTabRelative=-1}},
+    {key=&quot;}&quot;, mods=&quot;SHIFT|ALT&quot;, action=wezterm.action{MoveTabRelative=1}},
+  }
+}
+</code></pre>
+<h2><a class="header" href="#movetab" id="movetab">MoveTab</a></h2>
+<p>Move the tab so that it has the index specified by the argument. eg: <code>0</code>
+moves the tab to be  leftmost, while <code>1</code> moves the tab so that it is second tab
+from the left, and so on.</p>
+<pre><code class="language-lua">local wezterm = require 'wezterm';
+
+local mykeys = {}
+for i = 1, 8 do
+  -- CTRL+ALT + number to move to that position
+  table.insert(mykeys, {
+    key=tostring(i),
+    mods=&quot;CTRL|ALT&quot;,
+    action=wezterm.action{Move=i-1},
+  })
+end
+
+return {
+  keys = mykeys,
+}
+</code></pre>
+<h2><a class="header" href="#scrollbypage" id="scrollbypage">ScrollByPage</a></h2>
+<p>Adjusts the scroll position by the number of pages specified by the argument.
+Negative values scroll upwards, while positive values scroll downwards.</p>
+<pre><code class="language-lua">local wezterm = require 'wezterm';
+
+return {
+  keys = {
+    {key=&quot;PageUp&quot;, mods=&quot;SHIFT&quot;, action=wezterm.action{ScrollByPage=-1}},
+    {key=&quot;PageDown&quot;, mods=&quot;SHIFT&quot;, action=wezterm.action{ScrollByPage=1}},
+  }
+}
+</code></pre>
+<h2><a class="header" href="#reloadconfiguration" id="reloadconfiguration">ReloadConfiguration</a></h2>
+<p>Explicitly reload the configuration.</p>
+<pre><code class="language-lua">return {
+  keys = {
+    {key=&quot;r&quot;, mods=&quot;CMD|SHIFT&quot;, action=&quot;ReloadConfiguration&quot;},
+  }
+}
+</code></pre>
+<h2><a class="header" href="#showlauncher" id="showlauncher">ShowLauncher</a></h2>
+<p>Activate the <a href="launch.html#the-launcher-menu">Launcher Menu</a>
+in the current tab.</p>
+<pre><code class="language-lua">return {
+  keys = {
+    {key=&quot;l&quot;, mods=&quot;ALT&quot;, action=&quot;ShowLauncher&quot;},
+  }
+}
+</code></pre>
+<h2><a class="header" href="#showtabnavigator" id="showtabnavigator">ShowTabNavigator</a></h2>
+<p>Activate the tab navigator UI in the current tab.  The tab
+navigator displays a list of tabs and allows you to select
+and activate a tab from that list.</p>
+<pre><code class="language-lua">return {
+  keys = {
+    {key=&quot;F9&quot;, mods=&quot;ALT&quot;, action=&quot;ShowTabNavigator&quot;},
+  }
+}
+</code></pre>
+<h2><a class="header" href="#selecttextatmousecursor" id="selecttextatmousecursor">SelectTextAtMouseCursor</a></h2>
+<p>Initiates selection of text at the current mouse cursor position.
+The mode argument can be one of <code>Cell</code>, <code>Word</code> or <code>Line</code> to control
+the scope of the selection.</p>
+<h2><a class="header" href="#extendselectiontomousecursor" id="extendselectiontomousecursor">ExtendSelectionToMouseCursor</a></h2>
+<p>Extends the current text selection to the current mouse cursor position.
+The mode argument can be one of <code>Cell</code>, <code>Word</code> or <code>Line</code> to control
+the scope of the selection.</p>
+<h2><a class="header" href="#openlinkatmousecursor" id="openlinkatmousecursor">OpenLinkAtMouseCursor</a></h2>
+<p>If the current mouse cursor position is over a cell that contains
+a hyperlink, this action causes that link to be opened.</p>
+<h2><a class="header" href="#completeselection" id="completeselection">CompleteSelection</a></h2>
+<p>Completes an active text selection process; the selection range is
+marked closed and then the selected text is copied as though the
+<code>Copy</code> action was executed.</p>
+<h2><a class="header" href="#completeselectionoropenlinkatmousecursor" id="completeselectionoropenlinkatmousecursor">CompleteSelectionOrOpenLinkAtMouseCursor</a></h2>
+<p>If a selection is in progress, acts as though <code>CompleteSelection</code> was
+triggered.  Otherwise acts as though <code>OpenLinkAtMouseCursor</code> was
+triggered.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="../config/misc.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="../config/appearance.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="../config/misc.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="../config/appearance.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+        
+        
+        <script type="text/javascript">
+            window.playpen_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>
