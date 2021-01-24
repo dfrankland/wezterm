@@ -1,5 +1,4 @@
-Both the keyboard and (starting with the most recently *nightly* builds) the
-mouse bindings are configurable.
+Both the keyboard and the mouse bindings are configurable.
 
 The assignments are based around a triggering event, such as a keypress or
 mouse button click, which is combined with a set of modifier keys to produce
@@ -8,7 +7,98 @@ an action.
 A full list of possible keys, mouse events and actions are included below,
 after these tables describing the default assignments.
 
-### Default Shortcut / Key Binding Assignments
+## Alt / Option Key Behavior & Composed Keys
+
+The operating system has its own user selectable keymap that is sometimes at
+odds with old-school terminal emulation that pre-dates internationalization as
+a concept.  WezTerm tries to behave reasonably by default, but also give you
+control in other situations.
+
+### Layouts with an AltGr key
+
+If you have, for example, a European keyboard layout with an AltGr key then
+wezterm will respect the composition effects of AltGr produced by the system.
+For example, in a German keymap, `AltGr <` will produce `|`.
+
+If your physical keyboard doesn't match the keyboard layout (eg: using a US
+keyboard with DEU selected in the OS), then the right hand `Alt` key is often
+re-interpreted as having the `AltGr` function with behavior as described above.
+
+The left `Alt` will be treated as a modifier with no composition effects.
+
+### macOS Left and Right Option Key
+
+*since: 20200620-160318-e00b076c*
+
+The default behavior is to treat the left `Option` key as the `Alt` modifier
+with no composition effects, while the right `Option` key performs composition
+(making it approximately equivalent to `AltGr` on other operating systems).
+
+You can control this behavior in your configuration:
+
+```lua
+return {
+  send_composed_key_when_left_alt_is_pressed=false,
+  send_composed_key_when_right_alt_is_pressed=true,
+}
+```
+
+If you're running an earlier release the options were a bit more limited;
+both left and right `Option` keys behave identically and composition
+behavior was influenced for both of them via the `send_composed_key_when_alt_is_pressed`
+configuration option.
+
+### macOS and the Input Method Editor (IME)
+
+WezTerm has support for using the operating system Input Method Editor (IME) on
+macOS.  This is useful in cases where you need to type kanji or are using a
+keyboard layout with dead keys.  However, the input method editor can get in
+the way and has a couple of irritating side effects such as preventing key
+repeat for a subset of keys.
+
+You can control whether the IME is enabled on macOS in your configuration file:
+
+```lua
+return {
+  use_ime = false,
+}
+```
+
+*since: 20200620-160318-e00b076c*
+
+The default for `use_ime` is false.  The default in earlier releases was `true`.
+
+### Microsoft Windows and Dead Keys
+
+*since: 20201031-154415-9614e117*
+
+By default, if you are using a layout with *dead keys* (eg: US International
+layout, or a number of European layouts such as German or French) pressing
+a dead key in wezterm will "hold" the dead key until the next character is
+pressed, resulting in a combined character with a diacritic.  For example,
+pressing `^` and then `e` will produce `ê`.  Pressing `^` then `SPACE`
+will produce `^` on its own.
+
+If you are a heavy user of Vi style editors then you may wish to disable
+dead key processing so that `^` can be used with a single keypress.
+
+You can tell WezTerm to disable dead keys by setting this in your configuration
+file:
+
+```lua
+return {
+  use_dead_keys = false
+}
+```
+
+### Defining Assignments for key combinations that may be composed
+
+When a key combination produces a composed key result, wezterm will look up
+both the composed and uncomposed versions of the keypress in your key mappings.
+If either lookup matches your assignment, that will take precedence over
+the normal key processing.
+
+## Default Shortcut / Key Binding Assignments
 
 The default key bindings are:
 
@@ -29,10 +119,10 @@ The default key bindings are:
 | `CTRL`      | `=`      | `IncreaseFontSize` |
 | `SUPER`     | `0`      | `ResetFontSize` |
 | `CTRL`      | `0`      | `ResetFontSize` |
-| `SUPER`     | `t`      | `SpawnTab="CurrentTabDomain"` |
-| `CTRL+SHIFT`     | `t`      | `SpawnTab="CurrentTabDomain"` |
+| `SUPER`     | `t`      | `SpawnTab="CurrentPaneDomain"` |
+| `CTRL+SHIFT`     | `t`      | `SpawnTab="CurrentPaneDomain"` |
 | `SUPER+SHIFT` | `T`    | `SpawnTab="DefaultDomain"` |
-| `SUPER`     | `w`      | `CloseCurrentTab` |
+| `SUPER`     | `w`      | `CloseCurrentTab{confirm=true}` |
 | `SUPER`     | `1`      | `ActivateTab=0` |
 | `SUPER`     | `2`      | `ActivateTab=1` |
 | `SUPER`     | `3`      | `ActivateTab=2` |
@@ -41,8 +131,8 @@ The default key bindings are:
 | `SUPER`     | `6`      | `ActivateTab=5` |
 | `SUPER`     | `7`      | `ActivateTab=6` |
 | `SUPER`     | `8`      | `ActivateTab=7` |
-| `SUPER`     | `9`      | `ActivateTab=8` |
-| `CTRL+SHIFT`     | `w`      | `CloseCurrentTab` |
+| `SUPER`     | `9`      | `ActivateTab=-1` |
+| `CTRL+SHIFT`     | `w`      | `CloseCurrentTab{confirm=true}` |
 | `CTRL+SHIFT`     | `1`      | `ActivateTab=0` |
 | `CTRL+SHIFT`     | `2`      | `ActivateTab=1` |
 | `CTRL+SHIFT`     | `3`      | `ActivateTab=2` |
@@ -51,17 +141,43 @@ The default key bindings are:
 | `CTRL+SHIFT`     | `6`      | `ActivateTab=5` |
 | `CTRL+SHIFT`     | `7`      | `ActivateTab=6` |
 | `CTRL+SHIFT`     | `8`      | `ActivateTab=7` |
-| `CTRL+SHIFT`     | `9`      | `ActivateTab=8` |
+| `CTRL+SHIFT`     | `9`      | `ActivateTab=-1` |
 | `SUPER+SHIFT` | `[` | `ActivateTabRelative=-1` |
 | `SUPER+SHIFT` | `]` | `ActivateTabRelative=1` |
-| `CTRL+SHIFT`     | `PAGEUP`      | `MoveTabRelative=-1` |
-| `CTRL+SHIFT`     | `PAGEDOWN`      | `MoveTabRelative=1` |
-| `SHIFT`          | `PAGEUP`      | `ScrollByPage=-1` |
-| `SHIFT`          | `PAGEDOWN`    | `ScrollByPage=1` |
+| `CTRL+SHIFT`     | `PageUp`      | `MoveTabRelative=-1` |
+| `CTRL+SHIFT`     | `PageDown`      | `MoveTabRelative=1` |
+| `SHIFT`          | `PageUp`      | `ScrollByPage=-1` |
+| `SHIFT`          | `PageDown`    | `ScrollByPage=1` |
 | `ALT`            | `9`    | `ShowTabNavigator` |
 | `SUPER`          | `r`    | `ReloadConfiguration` |
 | `CTRL+SHIFT`     | `R`    | `ReloadConfiguration` |
 | `SUPER`          | `h`    | `HideApplication` (macOS only) |
+| `SUPER`          | `k`    | `ClearScrollback` |
+| `CTRL+SHIFT`     | `K`    | `ClearScrollback` |
+| `SUPER`          | `f`    | `Search={CaseSensitiveString=""}` |
+| `CTRL+SHIFT`     | `F`    | `Search={CaseSensitiveString=""}` |
+| `CTRL+SHIFT`     | `X`    | `ActivateCopyMode` |
+| `CTRL+SHIFT+ALT` | `"`    | `SplitVertical={domain="CurrentPaneDomain"}` |
+| `CTRL+SHIFT+ALT` | `%`    | `SplitHorizontal={domain="CurrentPaneDomain"}` |
+| `CTRL+SHIFT+ALT` | `LeftArrow`    | `AdjustPaneSize={"Left", 1}` |
+| `CTRL+SHIFT+ALT` | `RightArrow`   | `AdjustPaneSize={"Right", 1}` |
+| `CTRL+SHIFT+ALT` | `UpArrow`      | `AdjustPaneSize={"Up", 1}` |
+| `CTRL+SHIFT+ALT` | `DownArrow`    | `AdjustPaneSize={"Down", 1}` |
+| `CTRL+SHIFT` | `LeftArrow`    | `ActivatePaneDirection="Left"` |
+| `CTRL+SHIFT` | `RightArrow`    | `ActivatePaneDirection="Right"` |
+| `CTRL+SHIFT` | `UpArrow`    | `ActivatePaneDirection="Up"` |
+| `CTRL+SHIFT` | `DownArrow`    | `ActivatePaneDirection="Down"` |
+| `CTRL` | `Z`    | `TogglePaneZoomState` |
+
+If you don't want the default assignments to be registered, you can
+disable all of them with this configuration; if you chose to do this,
+you must explicitly register every binding.
+
+```lua
+return {
+  disable_default_key_bindings = true,
+}
+```
 
 ## Default Mouse Assignments
 
@@ -77,7 +193,7 @@ that order.
 | Triple Left Down | `NONE`   | `SelectTextAtMouseCursor="Line"`  |
 | Double Left Down | `NONE`   | `SelectTextAtMouseCursor="Word"`  |
 | Single Left Down | `NONE`   | `SelectTextAtMouseCursor="Cell"`  |
-| Single Left Down | `SHIFT`   | `ExtendSelectionToMouseCursor=nil`  |
+| Single Left Down | `SHIFT`   | `ExtendSelectionToMouseCursor={}`  |
 | Single Left Up | `NONE`   | `CompleteSelectionOrOpenLinkAtMouseCursor`  |
 | Double Left Up | `NONE`   | `CompleteSelection`  |
 | Triple Left Up | `NONE`   | `CompleteSelection`  |
@@ -86,9 +202,19 @@ that order.
 | Triple Left Drag | `NONE`   | `ExtendSelectionToMouseCursor="Line"`  |
 | Single Middle Down | `NONE`   | `Paste`  |
 
+If you don't want the default assignments to be registered, you can
+disable all of them with this configuration; if you chose to do this,
+you must explicitly register every binding.
+
+```lua
+return {
+  disable_default_mouse_bindings = true,
+}
+```
+
 ## Configuring Mouse Assignments
 
-*available in the most recent nightly*
+*since: 20200607-144723-74889cd4*
 
 You can define mouse actions using the `mouse_bindings` configuration section:
 
@@ -198,411 +324,44 @@ Possible Modifier labels are:
 
 You can combine modifiers using the `|` symbol (eg: `"CMD|CTRL"`).
 
-# Possible Actions
+### Leader Key
 
-Possible actions are listed below.
+*Since: 20201031-154415-9614e117*
 
-## SpawnTab
+A *leader* key is a a modal modifier key.  If leader is specified in the
+configuration then pressing that key combination will enable a virtual `LEADER`
+modifier.
 
-Create a new tab in the current window.  The argument defines to which *domain* the tab belongs:
+While `LEADER` is active, only defined key assignments that include
+`LEADER` in the `mods` mask will be recognized.  Other keypresses
+will be swallowed and NOT passed through to the terminal.
 
-```lua
-local wezterm = require 'wezterm';
-return {
-  keys = {
-    -- Create a new tab in the default domain
-    {key="t", mods="SHIFT|ALT", action=wezterm.action{SpawnTab="DefaultDomain"}},
-    -- Create a new tab in the same domain as the current tab
-    {key="t", mods="SHIFT|ALT", action=wezterm.action{SpawnTab="CurrentTabDomain"}},
-    -- Create a tab in a named domain
-    {key="t", mods="SHIFT|ALT", action=wezterm.action{SpawnTab={DomainName="unix"}}},
-  }
-}
-```
+`LEADER` stays active until a keypress is registered (whether it
+matches a key binding or not), or until it has been active for
+the duration specified by `timeout_milliseconds`, at which point
+it will automatically cancel itself.
 
-## SpawnWindow
-
-Create a new window containing a tab from the default tab domain.
-
-```lua
-local wezterm = require 'wezterm';
-return {
-  keys = {
-    {key="n", mods="SHIFT|CTRL", action="SpawnWindow"},
-  }
-}
-```
-
-## SpawnCommandInNewWindow / SpawnCommandInNewTab
-
-Spawn a new tab either into the current window or into a brand new window.
-The argument controls which command is run in the tab; it is a lua table
-with the following fields:
-
-* `args` - the argument array specifying the command and its arguments.
-  If omitted, the default program will be run.
-* `cwd` - the current working directory to set for the command.
-* `set_environment_variables` - a table specifying key/value pairs to
-  set in the environment
-* `domain` - specifies the domain into which the tab will be spawned.
-  See `SpawnTab` for examples.
+Here's an example configuration using `LEADER`.  In this configuration,
+pressing `CTRL-A` activates the leader key for up to 1 second (1000
+milliseconds).  While `LEADER` is active, the `|` key (with no other modifiers)
+will trigger the current pane to be split.
 
 ```lua
 local wezterm = require 'wezterm';
 
 return {
+  -- timeout_milliseconds defaults to 1000 and can be omitted
+  leader = { key="a", mods="CTRL", timeout_milliseconds=1000 },
   keys = {
-    -- CMD-y starts `top` in a new window
-    {key="y", mods="CMD", action=wezterm.action{SpawnCommandInNewWindow={
-      args={"top"}
-    }}},
+    {key="|", mods="LEADER", action=wezterm.action{SplitHorizontal={domain="CurrentPaneDomain"}}},
+    -- Send "CTRL-A" to the terminal when pressing CTRL-A, CTRL-A
+    {key="a", mods="LEADER|CTRL", action=wezterm.action{SendString="\x01"}},
   }
 }
 ```
 
-## ToggleFullScreen
+# Available Actions
 
-Toggles full screen mode for the current window.  (But see:
-<https://github.com/wez/wezterm/issues/177>)
-
-```lua
-return {
-  keys = {
-    {key="n", mods="SHIFT|CTRL", action="ToggleFullScreen"},
-  }
-}
-```
-
-## Copy
-
-Copy the selection to the clipboard.  On X11 systems, this populates both the
-Clipboard and the Primary Selection.
-
-```lua
-local wezterm = require 'wezterm';
-return {
-  keys = {
-    {key="c", mods="SHIFT|CTRL", action="Copy"},
-  }
-}
-```
-
-## Paste
-
-Paste the clipboard to the current tab.  On X11 systems, this copies from the
-Clipboard rather than the Primary Selection.  See also `PastePrimarySelection`.
-
-```lua
-local wezterm = require 'wezterm';
-return {
-  keys = {
-    {key="v", mods="SHIFT|CTRL", action="Paste"},
-  }
-}
-```
-
-## PastePrimarySelection
-
-X11: Paste the Primary Selection to the current tab.
-On other systems, this behaves identically to `Paste`.
-
-```lua
-local wezterm = require 'wezterm';
-return {
-  keys = {
-    {key="v", mods="SHIFT|CTRL", action="PastePrimarySelection"},
-  }
-}
-```
-
-## ActivateTabRelative
-
-Activate a tab relative to the current tab.  The argument value specifies an
-offset. eg: `-1` activates the tab to the left of the current tab, while `1`
-activates the tab to the right.
-
-```lua
-local wezterm = require 'wezterm';
-return {
-  keys = {
-    {key="{", mods="SHIFT|ALT", action=wezterm.action{ActivateTabRelative=-1}},
-    {key="}", mods="SHIFT|ALT", action=wezterm.action{ActivateTabRelative=1}},
-  }
-}
-```
-
-## ActivateTab
-
-Activate the tab specified by the argument value. eg: `0` activates the
-leftmost tab, while `1` activates the second tab from the left, and so on.
-
-```lua
-local wezterm = require 'wezterm';
-
-local mykeys = {}
-for i = 1, 8 do
-  -- CTRL+ALT + number to activate that tab
-  table.insert(mykeys, {
-    key=tostring(i),
-    mods="CTRL|ALT",
-    action=wezterm.action{ActivateTab=i-1},
-  })
-  -- F1 through F8 to activate that tab
-  table.insert(mykeys, {
-    key="F" .. tostring(i),
-    action=wezterm.action{ActivateTab=i-1},
-  })
-end
-
-return {
-  keys = mykeys,
-}
-```
-
-## IncreaseFontSize
-
-Increases the font size of the current window by 10%
-
-```lua
-local wezterm = require 'wezterm';
-return {
-  keys = {
-    {key="=", mods="CTRL", action="IncreaseFontSize"},
-  }
-}
-```
-  
-## DecreaseFontSize
-
-Decreases the font size of the current window by 10%
-
-```lua
-local wezterm = require 'wezterm';
-return {
-  keys = {
-    {key="-", mods="CTRL", action="DecreaseFontSize"},
-  }
-}
-```
-
-## ResetFontSize
-
-Reset the font size for the current window to the value in your configuration
-
-```lua
-local wezterm = require 'wezterm';
-return {
-  keys = {
-    {key="0", mods="CTRL", action="ResetFontSize"},
-  }
-}
-```
-
-## SendString
-
-Sends the string specified argument to the terminal in the current tab, as
-though that text were literally typed into the terminal.
-
-```lua
-local wezterm = require 'wezterm';
-
-return {
-  keys = {
-    {key="m", mods="CMD", action=wezterm.action{SendString="Hello"}},
-  }
-}
-```
-
-## Nop
-
-Does nothing.  This is useful to disable a default key assignment.
-
-```lua
-local wezterm = require 'wezterm';
-
-return {
-  keys = {
-    -- Turn off the default CMD-m Hide action
-    {key="m", mods="CMD", action="Nop"},
-  }
-}
-```
-
-## Hide
-
-Hides the current window
-
-```lua
-return {
-  keys = {
-    {key="h", mods="CMD", action="Hide"},
-  }
-}
-```
-
-## HideApplication
-
-On macOS, hide the WezTerm application.
-
-```lua
-return {
-  keys = {
-    {key="h", mods="CMD", action="HideApplication"},
-  }
-}
-```
-
-## QuitApplication
-
-Terminate the WezTerm application, killing all tabs.
-
-```lua
-return {
-  keys = {
-    {key="q", mods="CMD", action="QuitApplication"},
-  }
-}
-```
-
-## Show
-
-Shows the current window.
-
-## CloseCurrentTab
-
-Equivalent to clicking the `x` on the window title bar to close it: Closes the
-current tab.  If that was the last tab, closes that window.  If that was the
-last window, wezterm terminates.
-
-```lua
-return {
-  keys = {
-    {key="w", mods="CMD", action="CloseCurrentTab"},
-  }
-}
-```
-
-## MoveTabRelative
-
-Move the current tab relative to its peers.  The argument specifies an
-offset. eg: `-1` moves the tab to the left of the current tab, while `1` moves
-the tab to the right.
-
-```lua
-local wezterm = require 'wezterm';
-return {
-  keys = {
-    {key="{", mods="SHIFT|ALT", action=wezterm.action{MoveTabRelative=-1}},
-    {key="}", mods="SHIFT|ALT", action=wezterm.action{MoveTabRelative=1}},
-  }
-}
-```
-
-## MoveTab
-
-Move the tab so that it has the index specified by the argument. eg: `0`
-moves the tab to be  leftmost, while `1` moves the tab so that it is second tab
-from the left, and so on.
-
-```lua
-local wezterm = require 'wezterm';
-
-local mykeys = {}
-for i = 1, 8 do
-  -- CTRL+ALT + number to move to that position
-  table.insert(mykeys, {
-    key=tostring(i),
-    mods="CTRL|ALT",
-    action=wezterm.action{Move=i-1},
-  })
-end
-
-return {
-  keys = mykeys,
-}
-```
-
-## ScrollByPage
-
-Adjusts the scroll position by the number of pages specified by the argument.
-Negative values scroll upwards, while positive values scroll downwards.
-
-```lua
-local wezterm = require 'wezterm';
-
-return {
-  keys = {
-    {key="PageUp", mods="SHIFT", action=wezterm.action{ScrollByPage=-1}},
-    {key="PageDown", mods="SHIFT", action=wezterm.action{ScrollByPage=1}},
-  }
-}
-```
-
-## ReloadConfiguration
-
-Explicitly reload the configuration.
-
-```lua
-return {
-  keys = {
-    {key="r", mods="CMD|SHIFT", action="ReloadConfiguration"},
-  }
-}
-```
-
-## ShowLauncher
-
-Activate the [Launcher Menu](launch.html#the-launcher-menu)
-in the current tab.
-
-```lua
-return {
-  keys = {
-    {key="l", mods="ALT", action="ShowLauncher"},
-  }
-}
-```
-
-## ShowTabNavigator
-
-Activate the tab navigator UI in the current tab.  The tab
-navigator displays a list of tabs and allows you to select
-and activate a tab from that list.
-
-```lua
-return {
-  keys = {
-    {key="F9", mods="ALT", action="ShowTabNavigator"},
-  }
-}
-```
-
-## SelectTextAtMouseCursor
-
-Initiates selection of text at the current mouse cursor position.
-The mode argument can be one of `Cell`, `Word` or `Line` to control
-the scope of the selection.
-
-## ExtendSelectionToMouseCursor
-
-Extends the current text selection to the current mouse cursor position.
-The mode argument can be one of `Cell`, `Word` or `Line` to control
-the scope of the selection.
-
-## OpenLinkAtMouseCursor
-
-If the current mouse cursor position is over a cell that contains
-a hyperlink, this action causes that link to be opened.
-
-## CompleteSelection
-
-Completes an active text selection process; the selection range is
-marked closed and then the selected text is copied as though the
-`Copy` action was executed.
-
-## CompleteSelectionOrOpenLinkAtMouseCursor
-
-If a selection is in progress, acts as though `CompleteSelection` was
-triggered.  Otherwise acts as though `OpenLinkAtMouseCursor` was
-triggered.
+See the [`KeyAssignment` reference](lua/keyassignment/index.md) for information
+on available actions.
 

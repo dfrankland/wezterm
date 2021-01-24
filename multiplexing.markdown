@@ -152,7 +152,7 @@ return {
     {
       name = "wsl",
       connect_automatically = true,
-      serve_command = ["wsl", "wezterm", "start", "--daemonize", "--front-end", "MuxServer"],
+      serve_command = ["wsl", "wezterm-mux-server", "--daemonize"],
     }
   }
 }

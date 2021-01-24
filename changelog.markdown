@@ -10,6 +10,229 @@ daily) from the master branch.  It may not be usable and
 the feature set may change.  As features stabilize some
 brief notes about them may accumulate here.
 
+* Fix cursor position after using iTerm2 image protocol [#317](https://github.com/wez/wezterm/issues/317)
+* Fix pixel dimensions after changing the pane size; this was mostly invisible but impacted image scaling when using sixel or iTerm2 image protocols. [#312](https://github.com/wez/wezterm/issues/312)
+* Add support for OSC 133 which allows annotating output as `Output`, `Input` (that you typed) and `Prompt` (shell "chrome"). [Learn more about Semantic prompt and OSC 133](https://gitlab.freedesktop.org/Per_Bothner/specifications/blob/master/proposals/semantic-prompts.md)
+* Add [`ScrollToPrompt`](config/lua/keyassignment/ScrollToPrompt.md) key assignment that scrolls the viewport to the prior/next shell prompt emitted using OSC 133 Semantic Prompt escapes.  This assignment is not bound by default.
+* Fixed an issue where `SpawnWindow` didn't use the current working directory from the current pane to spawn the new window
+* Added `wezterm start --class CLASSNAME` option to specify the window class name under X11 and Windows, or the `app_id` under Wayland.  See `wezterm start --help` for more information.
+* Added shell integration for setting OSC 7 (working directory) and OSC 133 (semantic zones) for Zsh and Bash. [See Shell Integration docs](shell-integration.md).
+* Added `SemanticZone` as a possible parameter for [SelectTextAtMouseCursor](config/lua/keyassignment/SelectTextAtMouseCursor.md), making it possible to conveniently select complete input or output regions.
+* Improved font rendering [#320](https://github.com/wez/wezterm/issues/320) [#331](https://github.com/wez/wezterm/issues/331) and changed `font_antialias = "Greyscale"` by default.
+* Updated internal harfbuzz shaper to 2.7.2
+* Fixed ALT-Escape not sending ESC-ESC [#338](https://github.com/wez/wezterm/issues/338)
+* Added `allow_square_glyphs_to_overflow_width = "WhenFollowedBySpace"` option to allow square symbol glyphs to deliberately overflow their specified cell width when the next cell is a space.  Can be set to `Always` to allow overflowing regardless of the next cell being a space, or `Never` to strictly respect the cell width.  The default is `Never`. [#342](https://github.com/wez/wezterm/issues/342)
+* macOS: Improved key input when Option is pressed.  Fixed dead key processing when `use_ime=true`. [#357](https://github.com/wez/wezterm/issues/357)
+* macOS: Adjusted default dpi to 72 to bring point sizes into alignment with other macOS apps. [#332](https://github.com/wez/wezterm/issues/332)
+* Improved font fallback; we now try harder to find a system-provided font for glyphs that are not found in your explicitly configured fonts.
+* Revised pty output processing and removed the related `ratelimit_output_bytes_per_second` option
+* Workaround Cocoa leaking window position saved state file descriptors to child processes on macOS Big Sur, and Gnome/Mutter doing something similar under X11
+* The 256 color cube now uses slightly brighter colors [#348](https://github.com/wez/wezterm/issues/348)
+* New: added `line_height` configuration option to scale the computed cell height. The default is `1.0`, resulting in using the font-specified metrics. Setting it to `1.2` will result in a 20% larger cell height.
+* macOS: Fixed an issue where hovering over the split between panes could result in wezterm becoming unresponsive [#391](https://github.com/wez/wezterm/issues/391)
+* Closing windows and `QuitApplication` will now prompt for confirmation before proceeding with the close/quit.  Added `window_close_confirmation` to control this; valid values are `AlwaysPrompt` and `NeverPrompt`. [#280](https://github.com/wez/wezterm/issues/280)
+* Tidied up logging. Previously ERROR level logging was used to make sure that informational things showed up in the stderr stream. Now we use INFO level logging for this to avoid alarming the user.  You can set `WEZTERM_LOG=trace` in the environment to get more verbose logging for troubleshooting purposes.
+* Windows: fix an issue where VNC-server-emulated AltGr was not treated as AltGr [#392](https://github.com/wez/wezterm/issues/392)
+* X11: fix an issue where keys that produce unicode characters retained SHIFT as a modifier instead of normalizing it away. [#394](https://github.com/wez/wezterm/issues/394)
+* Fixed an issue where a symbol-only font would be seen as 0-width and panic wezterm [#404](https://github.com/wez/wezterm/issues/404)
+* Tweaked mouse selection: we now round the x-coordinate to the nearest cell which makes it a bit more forgiving if the mouse cursor is slightly to the left of the intended cell start. [#350](https://github.com/wez/wezterm/issues/350)
+* Added `selection_word_boundary` option to control double-click word selection boundaries. The default is <tt> \t\n{}\[\]()\"'\`</tt>. [#405](https://github.com/wez/wezterm/issues/405)
+* Added support for Curly, Dotted and Dashed underlines.  See [this documentation](faq.html#how-do-i-enable-undercurl-curly-underlines) on the escape sequences how enable undercurl support in vim and nvim. [#415](https://github.com/wez/wezterm/issues/415)
+* Fixed an issue where wezterm would spawn processes with `umask 077` on unix systems, rather than the more commonly expected `umask 022`. [#416](https://github.com/wez/wezterm/issues/416)
+* macOS: We now ship a Universal binary containing both Intel and "Apple Silicon" architectures
+* Setting a really large or really small font scale (using CTRL +/-) no longer causes a panic [#428](https://github.com/wez/wezterm/issues/428)
+* Fixed an issue where the mouse wheel wasn't mapped to cursor up/down when the alternate screen was active [#429](https://github.com/wez/wezterm/issues/429)
+* Fixed `ToggleFullScreen` not working on macOS and X11.  It still doesn't function on Windows.  `native_macos_fullscreen_mode = false` uses a fast full-screen window on macOS. Set it to `true` to use the slower macOS native "Spaces" style fullscreen mode. [#177](https://github.com/wez/wezterm/issues/177)
+* Windows: fix an issue where the initial window size didn't factor the correct DPI when the system-wide display scaling was not 100%. [#427](https://github.com/wez/wezterm/issues/427)
+* New: `adjust_window_size_when_changing_font_size` option to control whether changing the font size adjusts the dimensions of the window (true) or adjusts the number of terminal rows/columns (false).  The default is `true`. [#431](https://github.com/wez/wezterm/issues/431)
+* macOS: we no longer use MetalANGLE to render the gui; it was short lived as macOS Big Sur now uses Metal in its CGL implementation.  Support for using MetalANGLE is still present if the dylib is found on startup, but we no longer ship the dylib.
+* Windows: when pasting text, ensure that the text has CRLF line endings unless bracketed paste is enabled. This imperfect heuristic helps to keep multi-line pastes on multiple lines when using Windows console applications and to avoid interleaved blank lines when using unix applications. [#411](https://github.com/wez/wezterm/issues/411)
+
+### 20201101-103216-403d002d
+
+* Whoops! fixed a crash on macOS when using multiple windows in the new Metal renderer [#316](https://github.com/wez/wezterm/issues/316)
+
+### 20201031-154415-9614e117
+
+* New: split/pane support! `CTRL+SHIFT+ALT+"` to [SplitVertical](config/lua/keyassignment/SplitVertical.md),
+  and `CTRL+SHIFT+ALT+%` to [SplitHorizontal](config/lua/keyassignment/SplitHorizontal.md).
+* New: [LEADER](config/keys.md#leader-key) modifier key support
+* New: `window_background_opacity` and `window_background_image`
+  options to control using background images, transparent windows.
+  [More info](config/appearance.md#window-background-image)
+* New color schemes: `Dracula+`, `Gruvbox Light`, `MaterialDarker`,
+  `Overnight Slumber`, `Popping and Locking`, `Rapture`,
+  `jubi`, `nord`.
+* New: expanded lua API allows handling URI clicks and keyboard events
+  with lua callbacks.  See [wezterm.on](config/lua/wezterm/on.md) docs.
+* The GUI layer now normalizes SHIFT state for keyboard processing.
+  If a keypress is ASCII uppercase and SHIFT is held then the
+  SHIFT modifier is removed from the set of active modifiers.  This
+  has implications for your key assignment configuration; previously
+  you would write `{key="T", mods="CTRL|SHIFT"}`, after updating to
+  this release you need to write `{key="T", mods="CTRL"}` in order
+  for your key bindings to take effect.
+* Added `show_tab_index_in_tab_bar` option which defaults to true.
+  Causes the tab's ordinal index to be prefixed to tab titles.
+  The displayed number is 1-based.  You can set
+  `tab_and_split_indices_are_zero_based=true` if you prefer the
+  number to be zero based.
+* On Linux and macOS systems, wezterm can now attempt to guess the current
+  working directory that should be set in newly spawned local panes/tabs,
+  in case you don't have OSC 7 integration setup in your shell.
+* We now bundle *JetBrains Mono* and use it as the default font,
+  and add it as a default fallback font.  Similarly, we also
+  bundle *Noto Color Emoji* as a default fallback for emoji.
+* Added `automatically_reload_config=false` option to disable
+  automatic config reloading.  When set to false, you will need
+  to manually trigger a config reload (default: `SUPER+R` or
+  `CTRL+SHIFT+R`)
+* [`CloseCurrentTab`](config/lua/keyassignment/CloseCurrentTab.md)
+  now requires a `confirm` parameter.
+* Halved the memory usage requirements per Cell in the common
+  case (saving 32 bytes per cell), which gives more headroom for
+  users with large scrollback.
+* Reduced initial GPU VRAM requirement to 2MiB.  Improved texture
+  allocation to avoid needing lots of VRAM.
+* macOS: Fix issue where new windows would open as Cocoa tabs
+  when wezterm was maximized.
+* macOS: Fix issue where wezterm wouldn't adjust to DPI changes
+  when dragging across monitors or the screen resolution changed
+* macOS: Reduced trackpad based scrolling sensitivity; it was
+  hyper sensitive in previous releases, and now it is more
+  reasonable.
+* Fix an issue where EGL failed to initialize on Linux
+* If EGL/WGL/OpenGL fail to initialize, we now try to fallback
+  to Mesa OpenGL in software render mode.  This should result
+  in its llvmpipe renderer being used as a fallback, which
+  has improved visuals compared to wezterm's own basic CPU
+  based renderer.  (This applies to X11/Wayland and Windows
+  systems).
+* Setting `front_end="Software"` will try to use the Mesa OpenGL
+  software renderer if available (X11/Wayland/Windows).
+  The old basic CPU renderer has been removed.
+* The multiplexer server has been moved into its own
+  `wezterm-mux-server` executable.  You will need to revise
+  your `serve_command` configuration.
+* Windows: when started in an RDP session, force the use
+  of the Mesa software renderer to work around problems with
+  RDP GPU emulation.
+* Fixed an issue with TLS Multiplexing where bootstrapping
+  certificates would usually fail.
+* Windows: Fixed an issue that prevented ALT-Space from
+  showing the system menu in the window.
+* Windows: Fixed dead key handling.  By default dead keys
+  behave the same as in other programs and produce diacritics.
+  However, setting `use_dead_keys = false` in the config will
+  cause dead keys to behave like a regular key; eg: `^` would
+  just emit `^` as its own character.
+* Windows: Fixed an issue with the `Hide` key assignment;
+  it would hide the window with no way to show it again!
+  `Hide` now minimizes the window instead.
+* macOS: we now use Metal to render the gui, via
+  [MetalANGLE](https://github.com/kakashidinho/metalangle)
+* Windows: we now prefer to use Direct3D11 to render the
+  gui, via [ANGLE](https://chromium.googlesource.com/angle/angle/)
+  EGL.  The primary benefit of this is that upgrading your
+  graphics drivers while you have a stateful wezterm session
+  will no longer terminate the wezterm process. Resize
+  behavior is not as smooth with ANGLE as the prior WGL.
+  If you wish, you can set `prefer_egl = false` to use
+  WGL.
+* Improved image protocol support to have better render fidelity
+  and to reduce VRAM usage when the same image it displayed
+  multiple times in the same pane.
+
+### 20200909-002054-4c9af461
+
+* Added support for OSC 1 (Icon Title changing), and changed
+  how that interacts with OSC 2 (Window Title changing).
+  If you specify OSC 1 as a non-empty string, then that will
+  be used for the title of that terminal instance in the GUI.
+  Otherwise the Window Title will be reported instead.
+* Added missing mappings for Application Keypad keys on Linux
+* Workaround an EGL issue where Mesa reports the least-best
+  alpha value when enumerating configs, rather than the best
+  alpha.  This could lead to incorrect alpha under XWayland
+  and failure to initialize EGL and fallbacks to the Software
+  renderer in some other cases.
+* `enable_wayland` now defaults to `false`; mutter keeps breaking
+  client-side window decoration so let's just make it opt-in so
+  that the default experience is better.
+* Fixed a crash on Linux/X11 when using `wezterm connect HOST`
+* Added `tab_max_width` config setting to limit the maximum
+  width of tabs in the tab bar.  This defaults to 16 glyphs
+  in width.
+
+### 20200718-095447-d2315640
+
+* Added support for DECSET 1004 Focus Reporting to local
+  (not multiplexer) terminal sessions.
+* Added support for SGR 53/55 which enable/disable Overline style.
+  `printf "\x1b[53moverline\x1b[0m\n"`
+* Windows: updated bundled openconsole.exe to [efb1fdd](https://github.com/microsoft/terminal/commit/efb1fddb991dc1e6b614d1637daca7314a229925)
+  to resolve an issue where bold text didn't respect the configured color scheme.
+* Added `bold_brightens_ansi_colors` option to allow disabling the automatic
+  brightening of bold text.
+* Unix: fix an issue where setting the current working directory for a custom
+  spawned command would not take effect (thanks @john01dav!)
+* Windows: fixed buffering/timing issue where a response to a color query in
+  vim could be misinterpreted and replace a character in the editor with the
+  letter `g`.
+* X11: Improved support for non-24bpp display depths.  WezTerm now tries
+  harder to obtain an 8bpc surface on both 16bpp and 30bpp (10bpc) displays.
+* Windows: fixed falling back to a simpler OpenGL context if WGL is unable
+  to negotiate a robust context.  This is useful on systems with dual
+  high/low power GPU hardware where the OpenGL versions for the two GPUs
+  are different!
+* Color Schemes: synced with [ea2c841](https://github.com/mbadolato/iTerm2-Color-Schemes/commit/ea2c84115d8cff97b5255a7344090902ae669245)
+  which includes new schemes: `Adventure`, `Banana Blueberry`, `Blue Matrix`,
+  `BlueBerryPie`, `Cyberdyne`, `Django`, `DjangoRebornAgain`, `DjangoSmooth`,
+  `DoomOne`, `Konsolas`, `Laser`, `Mirage`, `Rouge 2`, `Sakura`, `Scarlet
+  Protocol`, `synthwave-everything`, `Tinacious Design (Dark)`, `Tinacious
+  Design (Light)`.
+
+### 20200620-160318-e00b076c
+
+* Fixed default mapping of ambiguous ctrl key combinations (`i`, `m`, `[`, `{`,
+  `@`) so that they emit the old school tab, newline, escape etc. values.
+  These got broken as part of prototyping CSI-u support a while back.
+* Added option to enable CSI-u key encodings.  This is a new mapping scheme
+  defined here <http://www.leonerd.org.uk/hacks/fixterms/> that disambiguates
+  and otherwise enables more key binding combinations.  You can enable this
+  setting using `enable_csi_u_key_encoding = true` in your config file.
+* Very early support for sixel graphics
+* macos: `use_ime` now defaults to false; this is a better out of
+  the box experience for most users.
+* macos: we now attempt to set a reasonable default LANG environment based
+  on the locale settings at the time that wezterm is launched.
+* macos: introduce `send_composed_key_when_left_alt_is_pressed` and
+  `send_composed_key_when_right_alt_is_pressed` boolean config settings.  Like
+  the existing `send_composed_key_when_alt_is_pressed` option, these control
+  whether the `Alt` or `Option` modifier produce composed output or generate
+  the raw key position with the ALT modifier applied.  The difference from the
+  existing config option is that on systems where Left and Right Alt can be
+  distinguished you now have the ability to control this behavior
+  independently.  The default behavior on these systems is
+  `send_composed_key_when_left_alt_is_pressed=false` and
+  `send_composed_key_when_right_alt_is_pressed=true` so that the right Alt key
+  behaves more like an `AltGr` key and generates the composed input, while the
+  Left Alt is regular uncomposed Alt.
+* Fonts: fixed an issue where specifying italic or bold in the second parameter
+  of `wezterm.font` didn't work as intended or documented
+* Improved terminal emulation conformance; added left/right margin support
+  and now passes [esctest](https://gitlab.freedesktop.org/terminal-wg/esctest)
+  to a similar degree as iTerm2
+* Fixed an issue where unmodified F5+ would use the CSI-u encoded-modifiers
+  format, and confused eg: `htop`.
+* `ActivateTab` now accepts negative numbers as a way to reference the last
+  tab in the Window.  The default assignment for `CTRL+SHIFT+9` and `CMD+9`
+  is now `ActivateTab=-1`, which selects the last tab.
+* Fixed an issue when applying hyperlink rules to lines that had mixed width
+  characters
+
+### 20200607-144723-74889cd4
+
 * Windows: Fixed AltGr handling for European layouts
 * X11: Added `PastePrimarySelection` key assignment that pastes the contents
   of the primary selection rather than the clipboard.
@@ -18,6 +241,26 @@ brief notes about them may accumulate here.
   the TOML based configuration.  You're unlikely to notice this unless you
   followed an example from the docs; migrate instead to using eg:
   `action=wezterm.action{ActivateTab=i-1}` to pass the integer argument.
+* Windows: now also available with a setup.exe installer.  The installer
+  enables "Open WezTerm Here" in the explorer.exe context menu.
+* Added `ClearScrollback` key assignment to clear the scrollback.  This is bound to CMD-K and CTRL-SHIFT-K by default.
+* Added `Search` key assignment to search the scrollback.  Read the new
+  [scrollback](scrollback.html) section for more information!
+* Fixed an issue where ALT+number would send the wrong output for European
+  keyboard layouts on macOS and Linux.  As part of this the default behavior
+  has changed: we used to force ALT+number to produce ALT+number instead of
+  the composed key for that layout.  We now emit the composed key by default.
+  You can switch to the old behavior either by explicitly binding those keys
+  or by setting `send_composed_key_when_alt_is_pressed = false` in your
+  configuration file.
+* Windows: the launcher menu now automatically lists out any WSL environments
+  you have installed so that you can quickly spawn a shell in any of them.
+  You can suppress this behavior if you wish by setting
+  `add_wsl_distributions_to_launch_menu = false`.
+  [Read more about the launcher menu](config/launch.html#the-launcher-menu)
+* Added `ActivateCopyMode` key assignment to put the tab into mouseless-copy
+  mode; [use the keyboard to define the selected text region](copymode.html).
+  This is bound to CTRL-SHIFT-X by default.
 
 ### 20200517-122836-92c201c6
 

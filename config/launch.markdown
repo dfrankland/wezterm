@@ -83,6 +83,9 @@ the option of connecting and spawning tabs/windows in those domains.
 the menu; one that runs the `top` program to monitor process activity and a
 second one that explicitly launches the `bash` shell.
 
+Each entry in `launch_menu` is an instance of a
+[SpawnCommand](lua/SpawnCommand.md) object.
+
 ```lua
 return {
   launch_menu = {
@@ -97,7 +100,7 @@ return {
       -- will be used as described in the documentation above
       args = {"bash", "-l"},
 
-      -- You can specify an alternative current workding directory;
+      -- You can specify an alternative current working directory;
       -- if you don't specify one then a default based on the OSC 7
       -- escape sequence will be used (see the Shell Integration
       -- docs), falling back to the home directory.
@@ -116,6 +119,10 @@ return {
 
 Here's a fancy example that will add some helpful entries to the launcher
 menu when running on Windows:
+
+*since: 20200607-144723-74889cd4*: The launcher menu automatically includes WSL
+entries by default, unless disabled using `add_wsl_distributions_to_launch_menu = false`.
+
 
 ```lua
 local wezterm = require 'wezterm';

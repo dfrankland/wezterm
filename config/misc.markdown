@@ -14,14 +14,6 @@ return {
   -- What to set the TERM variable to
   term = "xterm-256color",
 
-  -- Constrains the rate at which output from a child command is
-  -- processed and applied to the terminal model.
-  -- This acts as a brake in the case of a command spewing a
-  -- ton of output and allows for the UI to remain responsive
-  -- so that you can hit CTRL-C to interrupt it if desired.
-  -- The default value is 200,000 bytes/s.
-  ratelimit_output_bytes_per_second = 200000,
-
   -- Constrains the rate at which the multiplexer server will
   -- unilaterally push data to the client.
   -- This helps to avoid saturating the link between the client
@@ -65,7 +57,14 @@ return {
   -- `SteadyUnderline`, `BlinkingUnderline`, `SteadyBar`,
   -- and `BlinkingBar`.
   default_cursor_style = "SteadyBlock",
+
+  -- Specifies the maximum width that a tab can have in the
+  -- tab bar.  Defaults to 16 glyphs in width.
+  tab_max_width = 16,
+
+  -- Set this to "NeverPrompt" if you don't like confirming closing
+  -- windows every time
+  window_close_confirmation = "AlwaysPrompt",
 }
 ```
-
 

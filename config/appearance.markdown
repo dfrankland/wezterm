@@ -1,8 +1,8 @@
 ### Color Scheme
 
-Wezterm ships with the full set of over 200 color schemes available from
-[iterm2colorschemes.com](https://iterm2colorschemes.com/).  You can select a
-color scheme with a line like this:
+WezTerm ships with the full set of over 200 color schemes available from
+[iTerm2-Color-Schemes](https://github.com/mbadolato/iTerm2-Color-Schemes#screenshots).
+You can select a color scheme with a line like this:
 
 ```lua
 return {
@@ -10,8 +10,8 @@ return {
 }
 ```
 
-There are literally too many schemes to reasonably list here; check out the
-screenshots on [iterm2colorschemes.com](https://iterm2colorschemes.com/)!
+You can find a list of available color schemes and screenshots
+in [The Color Schemes Section](../colorschemes/index.md).
 
 The `color_scheme` option takes precedence over the `colors` section below.
 
@@ -46,6 +46,9 @@ return {
 
       -- The color of the scrollbar "thumb"; the portion that represents the current viewport
       scrollbar_thumb = "#222222",
+
+      -- The color of the split lines between panes
+      split = "#444444",
 
       ansi = {"black", "maroon", "green", "olive", "navy", "purple", "teal", "silver"},
       brights = {"grey", "red", "lime", "yellow", "blue", "fuchsia", "aqua", "white"},
@@ -87,9 +90,15 @@ If you'd like to factor your color schemes out into separate files, you
 can create a file with a `[colors]` section; take a look at [one of
 the available color schemes for an example](https://github.com/wez/wezterm/blob/master/assets/colors/Builtin%20Dark.toml).
 
-You then need to instruct wezterm where to look for your scheme files;
-the `color_scheme_dirs` setting specifies a list of directories to
-be searched:
+It is recommended that you place your custom scheme in a directory
+named `$HOME/.config/wezterm/colors` if you're on a POSIX system.
+
+On a Windows system, `wezterm` will search for schemes in a directory
+named `colors` that is in the same directory as the `wezterm.exe`.
+
+If you wish to place your color scheme files in some other location, then will
+will need to instruct wezterm where to look for your scheme files; the
+`color_scheme_dirs` setting specifies a list of directories to be searched:
 
 ```lua
 return {
@@ -118,12 +127,19 @@ $ for scheme in *.sh ; do ; echo $scheme ; \
 
   <video width="80%" controls src="../screenshots/wezterm-dynamic-colors.mp4" loop></video>
 
-### Tab Bar Colors
+### Tab Bar Appearance & Colors
 
 The following options control the appearance of the tab bar:
 
 ```lua
 return {
+  -- set to false to disable the tab bar completely
+  enable_tab_bar = true,
+
+  -- set to true to hide the tab bar when there is only
+  -- a single tab in the window
+  hide_tab_bar_if_only_one_tab = false,
+
   colors = {
     tab_bar = {
 
@@ -195,6 +211,143 @@ return {
     top = 0,
     bottom = 0,
   }
+}
+```
+
+## Styling Inactive Panes
+
+*since: 20201031-154415-9614e117*
+
+To make it easier to see which pane is active, the inactive panes are dimmed
+and de-saturated slightly.
+
+You can specify your own transformation to the pane colors with a hue,
+saturation, brightness (HSB) multipler.
+
+In this example, inactive panes will be slightly de-saturated and dimmed;
+this is the default configuration:
+
+```lua
+return {
+  inactive_pane_hsb = {
+    saturation = 0.9,
+    brightness = 0.8,
+  }
+}
+```
+
+The transform works by converting the RGB colors to HSV values and
+then multiplying the HSV by the numbers specified in `inactive_pane_hsb`.
+
+Modifying the hue changes the hue of the color by rotating it through the color
+wheel. It is not as useful as the other components, but is available "for free"
+as part of the colorspace conversion.
+
+Modifying the saturation can add or reduce the amount of "colorfulness". Making
+the value smaller can make it appear more washed out.
+
+Modifying the brightness can be used to dim or increase the perceived amount of
+light.
+
+The range of these values is 0.0 and up; they are used to multiply the existing
+values, so the default of 1.0 preserves the existing component, whilst 0.5 will
+reduce it by half, and 2.0 will double the value.
+
+## Window Background Image
+
+<img width="100%" height="100%" src="../screenshots/wezterm-vday-screenshot.png" alt="Screenshot">
+
+*since: 20201031-154415-9614e117*
+
+You can attach an image to the background of the wezterm window:
+
+```lua
+return {
+  window_background_image = "/path/to/wallpaper.jpg"
+}
+```
+
+If the path is a relative path then it will be expanded relative
+to the directory containing your `wezterm.lua` config file.
+
+PNG, JPEG, GIF, BMP, ICO, TIFF, PNM, DDS, TGA and farbfeld files
+can be loaded.
+
+The image will be scaled to fit the window contents.  Very large
+images may decrease render performance and take up VRAM from the
+GPU, so you may wish to resize the image file before using it.
+
+You can optionally transform the background image by specifying
+a hue, saturation, brightness multiplier:
+
+```lua
+
+return {
+  window_background_image = "/path/to/wallpaper.jpg",
+
+  window_background_image_hsb = {
+    -- Darken the background image by reducing it to 1/3rd
+    brightness = 0.3,
+
+    -- You can adjust the hue by scaling its value.
+    -- a multiplier of 1.0 leaves the value unchanged.
+    hue = 1.0,
+
+    -- You can adjust the saturation also.
+    saturation = 1.0,
+  },
+}
+```
+
+See [Styling Inactive Panes](#style-inactive-panes) for more information
+on hue, saturation, brigthness transformations.
+
+## Window Background Opacity
+
+*since: 20201031-154415-9614e117*
+
+If your Operating System provides Compositing support then WezTerm is able to
+specify the alpha channel value for the background content, rendering the
+window background translucent and causing the windows/desktop behind it to show
+through the window.
+
+macOS, Windows and Wayland support compositing out of the box. X11 may require
+installing or configuring a compositing window manager. XWayland under
+Mutter/Wayland also works without any additional configuration.
+
+`window_background_opacity` specifies the alpha channel value
+with floating point numbers in the range `0.0` (meaning completely
+translucent) through to `1.0` (meaning completely opaque).
+
+Setting this to a value other than the default `1.0` may
+impact render performance.
+
+```lua
+return {
+  window_background_opacity = 1.0,
+}
+```
+
+## Text Background Opacity
+
+*since: 20201031-154415-9614e117*
+
+When using a background image or background opacity, the image content can
+have relatively low contrast with respect to the text you are trying to
+read in your terminal.
+
+The `text_background_opacity` setting specifies the alpha channel value to use
+for the background color of cells other than the default background color.
+
+The default for this setting is `1.0`, which means that the background
+color is fully opaque.
+
+The range of values permitted are `0.0` (completely translucent)
+through to `1.0` (completely opaque).
+
+```lua
+return {
+  text_background_opacity = 0.3,
 }
 ```
 
