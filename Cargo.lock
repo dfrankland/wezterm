@@ -635,7 +635,7 @@ dependencies = [
  "config",
  "leb128",
  "log",
- "metrics",
+ "metrics 0.12.1",
  "mux",
  "portable-pty",
  "rangeset",
@@ -2005,10 +2005,35 @@ dependencies = [
 ]
 
 [[package]]
+name = "metrics"
+version = "0.16.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9c0a7fa53d812d26e59d2baf7a6f77442041454ab32908eb304447f00f0dd4de"
+dependencies = [
+ "metrics-macros",
+ "proc-macro-hack",
+ "t1ha",
+]
+
+[[package]]
 name = "metrics-core"
 version = "0.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7c064b3a1ff41f4bf6c91185c8a0caeccf8a8a27e9d0f92cc54cf3dbec812f48"
+
+[[package]]
+name = "metrics-macros"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "caa72e4a3d157986dd2565c82ecbddcc23941513669a3766b938f6b72eb87f3f"
+dependencies = [
+ "lazy_static",
+ "proc-macro-hack",
+ "proc-macro2",
+ "quote 1.0.8",
+ "regex",
+ "syn 1.0.58",
+]
 
 [[package]]
 name = "miniz_oxide"
@@ -3602,6 +3627,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "t1ha"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fa44aa51ae1a544e2c35a38831ba54ae40591f21384816f531b84f3e984b9ccc"
+dependencies = [
+ "cfg-if 0.1.10",
+ "lazy_static",
+ "num-traits 0.2.14",
+ "rustc_version",
+]
+
+[[package]]
 name = "tabout"
 version = "0.3.0"
 dependencies = [
@@ -4292,7 +4329,7 @@ dependencies = [
  "futures",
  "log",
  "lru",
- "metrics",
+ "metrics 0.12.1",
  "mux",
  "openssl",
  "portable-pty",
@@ -4325,7 +4362,7 @@ dependencies = [
  "harfbuzz",
  "lazy_static",
  "log",
- "metrics",
+ "metrics 0.12.1",
  "mux",
  "ordered-float",
  "rangeset",
@@ -4363,7 +4400,7 @@ dependencies = [
  "log",
  "lru",
  "luahelper",
- "metrics",
+ "metrics 0.16.0",
  "mlua",
  "mux",
  "open",
@@ -4563,7 +4600,7 @@ dependencies = [
  "line_drawing",
  "log",
  "memmap",
- "metrics",
+ "metrics 0.12.1",
  "mio",
  "objc",
  "palette",
